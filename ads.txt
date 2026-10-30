@@ -1,0 +1,4 @@
+# Authorized Digital Sellers (ads.txt)
+# Replace the publisher ID below with your REAL AdSense publisher ID (ca-pub-XXXXXXXXXXXXXXXX)
+# from adsense.google.com. The last value is Google's fixed certification authority ID — do not change.
+google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0

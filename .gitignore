@@ -1,0 +1,14 @@
+# OS / editor junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# WorkBuddy project data (keep repo to deployable site only)
+.workbuddy/
+
+# Misc debug / generated assets (live outside this folder already, but be safe)
+tmp_page_read/
+generated-images/
+node_modules/
+venv/
+.venv/
