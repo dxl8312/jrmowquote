@@ -18,46 +18,42 @@
 
 ---
 
-## 第 2 步：复制验证 TXT 记录
+## 第 2~4 步：验证所有权（自动优先，手动兜底）
 
-GSC 会显示一段类似：
+> 实际最新流程：GSC 在「网域」验证时，经常只需点 **验证 / Verify** 并按提示**授权**（如关联 Cloudflare / Google 账号）即可**自动完成**，几秒通过，无需手动复制 TXT。
+> 如果自动授权这条路不通（界面没出现授权按钮、或验证失败），再用下面的**手动 TXT 方式**兜底。
 
-```
-google-site-verification=abcd1234EFGH5678ijkl
-```
+### 手动 TXT 方式（备选）
 
-全选复制（**含 `google-site-verification=` 前缀**）。
-
----
-
-## 第 3 步：到 Cloudflare 加这条 TXT 记录
-
-1. 打开 https://dash.cloudflare.com → 左侧 **Domains** → 点 **jrmowquote.com**
-2. 进入该域 Dashboard → 左侧 **DNS** → **Records**
-3. 点 **Add record / 添加记录**，填写：
-   - **Type / 类型**：`TXT`
-   - **Name / 名称**：`@`（或留空，表示根域）
-   - **Content / 内容**：粘贴刚才复制的 `google-site-verification=...` 整段
-   - **TTL**：`Auto`（自动）
-   - **Proxy status / 代理状态**：**DNS only（灰云）** —— TXT 验证记录不要开代理
-4. 点 **Save / 保存**
+1. GSC 显示一段类似：
+   ```
+   google-site-verification=abcd1234EFGH5678ijkl
+   ```
+   全选复制（**含 `google-site-verification=` 前缀**）。
+2. 打开 https://dash.cloudflare.com → **Domains** → **jrmowquote.com** → **DNS** → **Records** → **Add record**：
+   - **Type**：`TXT`
+   - **Name**：`@`（或留空，表示根域）
+   - **Content**：粘贴上面整段
+   - **TTL**：`Auto`
+   - **Proxy status**：**DNS only（灰云）**
+3. 回到 GSC 点 **验证 / Verify**。通常几秒到几分钟通过。失败就等 1–2 分钟再点一次，不要重复加多条 TXT。
 
 ---
 
-## 第 4 步：回 GSC 点验证
+## 第 5 步：提交 sitemap（⚠️ 网域型必须填完整 URL）
 
-- 回到 GSC 验证窗口 → 点 **验证 / Verify**
-- 通常几秒到几分钟通过（DNS 已在 CF，传播快）
-- 通过后会显示「所有权已验证 / Ownership verified」
+1. GSC 左侧菜单 → **Indexing / 编制索引 → Sitemaps / 站点地图**
+2. 在「Add a new sitemap / 添加新的站点地图」输入框填写：
 
-> 若提示失败：等 1–2 分钟再点一次（TXT 记录全球同步需一点时间）。不要重复添加多条 TXT。
+   - **网域（Domain）型资源（本教程第 1 步选的就是这种）→ 必须填完整绝对地址：**
+     ```
+     https://jrmowquote.com/sitemap.xml
+     ```
+   - 网址前缀（URL prefix）型资源 → 才填纯文件名 `sitemap.xml`
 
----
+   > ⚠️ 报「站点地图地址无效 / Invalid sitemap address」= 网域型却填了纯文件名。
+   > 网域型覆盖 http/https/www/非www 全部，GSC 不知根在哪，所以必须写全。
 
-## 第 5 步：提交 sitemap
-
-1. GSC 左侧菜单 → **Sitemaps / 站点地图**
-2. 在「Add a new sitemap / 添加新的站点地图」输入框填：`sitemap.xml`（只填文件名，不用填完整 URL）
 3. 点 **Submit / 提交**
 4. 状态从「Pending / 待处理」变为「Success / 成功」，已发现 URL 数 = 8
 
