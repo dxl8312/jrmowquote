@@ -363,14 +363,12 @@
             .diy-tbl th,.diy-tbl td{padding:8px 8px;font-size:12px}
         }
 
-        /* ===== Print: only the quote document (no blank pages) ===== */
+        /* ===== Print: only the quote document (no blank pages / no stray boxes) ===== */
         @media print{
             @page{ margin:12mm }
             body{ margin:0; background:#fff }
-            header.nav, footer, section:not(#quote-gen){ display:none !important }
-            #quote-gen{ display:block !important; background:#fff }
-            #quote-gen .wrap > *:not(#quoteDoc){ display:none !important }
-            .quote-doc{ display:block !important; position:static; width:100%; max-width:none; margin:0; padding:0; border:none; box-shadow:none; background:#fff }
+            body.printing-quote > *:not(#quoteDoc){ display:none !important }
+            body.printing-quote #quoteDoc{ display:block !important; position:static; width:100%; max-width:none; margin:0; padding:0; border:none; box-shadow:none; background:#fff }
             .no-print{ display:none !important }
         }
     
@@ -1654,8 +1652,20 @@ function printQuote(){
   if(!document.getElementById('quoteDoc').classList.contains('show')){ buildQuote(); }
   var prevTitle = document.title;
   document.title = 'Lawn Care Estimate — JrMowQuote';
-  function restoreTitle(){ document.title = prevTitle; window.removeEventListener('afterprint', restoreTitle); }
-  window.addEventListener('afterprint', restoreTitle);
+  /* Lift the quote to <body> so print CSS can hide everything else cleanly (no stray blank boxes). */
+  var q = document.getElementById('quoteDoc');
+  var parent = q.parentNode;
+  var next = q.nextSibling;
+  document.body.appendChild(q);
+  document.body.classList.add('printing-quote');
+  function restore(){
+    document.title = prevTitle;
+    document.body.classList.remove('printing-quote');
+    if(next && next.parentNode === parent){ parent.insertBefore(q, next); }
+    else { parent.appendChild(q); }
+    window.removeEventListener('afterprint', restore);
+  }
+  window.addEventListener('afterprint', restore);
   window.print();
 }
 
