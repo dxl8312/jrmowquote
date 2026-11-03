@@ -12,7 +12,7 @@
 - ✅ 正确：`仓库根/index.html`、`仓库根/images/`、`仓库根/pages/`、`仓库根/sitemap.xml`、`仓库根/robots.txt`
 - ❌ 错误：`仓库根/lawn-mowing-calculator-prototype/index.html`（多了子层，CF 会找不到首页）
 
-本机目录 `D:/Users/Deven/WorkBuddy/2026-10-23-22-34-18/lawn-mowing-calculator-prototype` 下的内容就是要上传的全部。建议把这个目录内容作为 GitHub 仓库根。
+本机项目目录（即 GitHub 仓库根）下的内容就是要上传的全部。建议把这个目录内容作为 GitHub 仓库根。
 
 ---
 
@@ -22,7 +22,7 @@
 1. 右上角 **＋ → New repository**，仓库名随意（如 `jrmowquote`），**Public**，**不要**勾选 Add README（保留空仓库）。
 2. 本地 Git Bash 执行（把目录内容推上去）：
    ```bash
-   cd "D:/Users/Deven/WorkBuddy/2026-10-23-22-34-18/lawn-mowing-calculator-prototype"
+   cd "<项目目录>"
    git init
    git add -A
    git commit -m "initial site"

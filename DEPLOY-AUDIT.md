@@ -36,7 +36,6 @@
 
 | 初判 | 实际结论 | 处置 |
 |---|---|---|
-| `index.html / diy-vs-hire.html` 含 `yourtag-20` | **已知占位**（Amazon Associates ID） | 注册后替换，不阻断部署 |
 | `index.html / diy-vs-hire.html` 含 `pub-0000000000000000` | **Adsense 广告代码已预埋，用占位 client ID**（见第三节） | 注册后替换，不阻断部署 |
 | `index.html <tr> open=28 close=29` | **误报**（grep 复核 29/29 平衡，扫描正则边界问题） | 无需处理 |
 | `og.jpg / og-*.jpg` 报孤儿 | **误报**（通过 `og:image` meta 引用，非 `<img>`） | 无需处理 |
@@ -67,7 +66,6 @@
 
 | 优先级 | 事项 | 位置 | 备注 |
 |---|---|---|---|
-| 🔴 高 | 填 Amazon Associates ID | `index.html` + `diy-vs-hire.html` 共 5 处 `tag=yourtag-20` | 注册后替换；Amazon 要求 180 天内 ≥3 单否则关户 |
 | 🔴 高 | 填 AdSense 真实 ID | `index.html` / `diy-vs-hire.html` 广告代码 + `ads.txt` | 拿到账户后替换，**再**提交审核 |
 | 🟡 中 | 移动端汉堡菜单 | 全部 8 页 header | 当前 ≤980px 导航整条隐藏，窄屏丢失入口，建议补切换按钮 |
 | 🟡 中 | 开通联系邮箱 | `hello@jrmowquote.com` | 经 Cloudflare Email Routing 转发到 Gmail（DNS 切到 CF 后做） |
@@ -88,4 +86,4 @@
 
 ---
 
-**一句话**：代码可以放心部署。剩下全是「拿到 AdSense / Amazon 账号后填 ID」和「移动端体验增强」的运营类待办，没有会拦住上线的硬伤。
+**一句话**：代码可以放心部署。剩下全是「拿到 AdSense 账号后填 ID」和「移动端体验增强」的运营类待办，没有会拦住上线的硬伤。

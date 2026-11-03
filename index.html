@@ -10,6 +10,9 @@
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://jrmowquote.com/" />
 
+    <!-- ===== Impact.com site ownership verification ===== -->
+    <meta name="impact-site-verification" value="b29e5de1-ec26-4d89-9859-fdb51cc9cb10" />
+
     <!-- ===== Open Graph ===== -->
     <meta property="og:title" content="Lawn Mowing Cost Calculator + Lawn Care Services" />
     <meta property="og:description" content="Estimate mowing cost by state, add lawn care services, compare DIY vs hire, and generate a printable quote." />
@@ -203,7 +206,7 @@
         .gcard span{font-size:13px;line-height:1.55;color:var(--muted);flex:1}
         .gcard em{font-style:normal;font-size:12.5px;font-weight:700;color:var(--green-700);margin-top:12px}
         @media(max-width:760px){.guides{grid-template-columns:1fr}}
-        .optset{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+        .optset{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
         .optset.three{grid-template-columns:repeat(3,1fr)}
         .opt{border:2px solid var(--line);background:#fff;border-radius:12px;padding:12px 14px;cursor:pointer;display:block}
         .opt .t{display:block;font-weight:700;color:var(--green-900);font-size:15px}
@@ -322,11 +325,6 @@
         .mp .t{font-weight:700;font-size:13.5px;color:var(--green-900);display:block}
         .mp .p{font-size:12px;color:var(--muted);display:block;margin-top:2px}
         .mp .fit{position:absolute;top:-9px;right:8px;background:var(--amber);color:#4a3300;font-size:10px;font-weight:800;padding:2px 7px;border-radius:999px}
-        .aff-cta{display:flex;gap:14px;align-items:center;justify-content:space-between;margin-top:16px;
-            background:var(--green-900);color:#fff;border-radius:12px;padding:16px 18px;flex-wrap:wrap}
-        .aff-cta .txt{font-size:13.5px;color:#cfe3d6;max-width:520px}
-        .aff-cta .txt b{color:#fff;font-size:15px;display:block;margin-bottom:2px}
-        .aff-cta .btn{background:var(--lime);color:#14361f;font-weight:800;white-space:nowrap}
         .verdict{background:var(--green-100);border-left:4px solid var(--green-700);padding:14px 16px;border-radius:8px;margin-top:16px;font-size:15px;line-height:1.6}
         .verdict b{color:var(--green-900)}
 
@@ -352,8 +350,8 @@
         @media(max-width:860px){ .services{grid-template-columns:repeat(2,minmax(0,1fr))} }
         @media(max-width:560px){ .services{grid-template-columns:1fr} }
         @media(max-width:760px){
-            .grid,.regions,.affiliate .items,.leadgen form,
-            .optset,.optset.three,.diy-cols,.mini,.mower-grid{grid-template-columns:1fr}
+            .optset{grid-template-columns:repeat(2,1fr)}
+            .grid,.regions,.affiliate .items,.leadgen form,.optset.three,.diy-cols,.mini,.mower-grid{grid-template-columns:1fr}
             .affcards{grid-template-columns:1fr}
             .diy-stats{grid-template-columns:1fr 1fr}
             .result{grid-template-columns:1fr}
@@ -657,12 +655,6 @@
             <div class="mower-grid" id="mowerGrid"></div>
             <p style="font-size:13px;color:var(--muted);margin:14px 0 0" id="upgradeNote"></p>
 
-            <div class="aff-cta">
-                <div class="txt"><b id="affName">—</b><span id="affWhy"></span></div>
-                <a class="btn" id="affLink" href="https://www.amazon.com/?tag=yourtag-20" rel="nofollow sponsored" target="_blank">Check prices →</a>
-            </div>
-            <p style="font-size:11px;color:var(--muted);margin-top:8px">As an Amazon Associate we earn from qualifying purchases. Mower prices are typical 2026 US retail bands; Amazon links are placeholders you replace with your own tracking ID.</p>
-
             <div style="text-align:center;margin-top:18px">
                 <a class="btn ghost" href="pages/diy-vs-hire.html">Full DIY vs Hire guide: 1 mow → 5 years →</a>
             </div>
@@ -795,21 +787,6 @@
     </div>
 </section>
 
-<!-- ===== Affiliate section (monetization #2) ===== -->
-<section class="block" id="affiliate" style="background:#eef6f1">
-    <div class="wrap">
-        <h2 class="section">DIY Tools &amp; Gear (Affiliate Picks)</h2>
-        <p class="lead">If you'd rather mow it yourself, these are editor-tested picks matched to common lawn sizes. <em>As an Amazon Associate we earn from qualifying purchases.</em></p>
-        <div class="affiliate">
-            <div class="items">
-                <div class="item"><div class="ph">Cordless Mower</div><a href="https://www.amazon.com/?tag=yourtag-20" rel="nofollow sponsored" target="_blank">View on Amazon →</a></div>
-                <div class="item"><div class="ph">String Trimmer</div><a href="https://www.amazon.com/?tag=yourtag-20" rel="nofollow sponsored" target="_blank">View on Amazon →</a></div>
-                <div class="item"><div class="ph">Leaf Blower</div><a href="https://www.amazon.com/?tag=yourtag-20" rel="nofollow sponsored" target="_blank">View on Amazon →</a></div>
-            </div>
-        </div>
-    </div>
-</section>
-
 <!-- ===== Quote generator ===== -->
 <section class="block" id="quote-gen">
     <div class="wrap">
@@ -909,7 +886,7 @@
             <div><h4>Company</h4><a href="about.html">About</a><br><a href="contact.html">Contact</a><br><a href="privacy.html">Privacy</a></div>
         </div>
         <p style="margin:0 0 12px;color:#cfe9d8">JrMowQuote — Free Lawn Mowing Cost Calculator · Operated by Jarenson (觉然轩)</p>
-        <div class="disclaim">Estimates only — not a binding quote. State/province rate indices are based on the MERIC/C2ER Cost of Living Index (2026); season lengths are climate-based estimates anchored to USDA hardiness zones; service prices reference LawnStarter (US) and Mow.ca / Dreame (Canada) 2026 published ranges. Full citations on the <a href="methodology.html" style="color:#bfe0cd;text-decoration:underline">Methodology</a> page. Affiliate disclosure: some links are affiliate links; we may earn a commission at no extra cost to you. Prototype built with WorkBuddy.</div>
+        <div class="disclaim">Estimates only — not a binding quote. State/province rate indices are based on the MERIC/C2ER Cost of Living Index (2026); season lengths are climate-based estimates anchored to USDA hardiness zones; service prices reference LawnStarter (US) and Mow.ca / Dreame (Canada) 2026 published ranges. Full citations on the <a href="methodology.html" style="color:#bfe0cd;text-decoration:underline">Methodology</a> page. Affiliate disclosure: some links are affiliate links; we may earn a commission at no extra cost to you.</div>
     </div>
 </footer>
 
@@ -1424,12 +1401,6 @@ function renderDIY(sqft, cond, terr, obs, freq, st, pv){
     upTxt = 'You are already on the widest deck in the list — nothing left to upgrade for time.';
   }
   document.getElementById('upgradeNote').textContent = upTxt;
-
-  /* ---- affiliate CTA ---- */
-  document.getElementById('affName').textContent = m.name + ' · ' + money(m.min * CURSCALE) + '–' + money(m.max * CURSCALE);
-  document.getElementById('affWhy').textContent = 'Matched to ' + fmtN(sqft) + ' sq ft' +
-    (m.id === fitM.id ? ' — the best fit for your lawn size.' : ' — the highlighted "Best fit" card suits your area better.');
-  document.getElementById('affLink').textContent = 'Check ' + m.name + ' prices →';
 }
 
 function pickMower(id){
@@ -1483,8 +1454,6 @@ function resetDIY(){
   var g = document.getElementById('mowerGrid'); if(g) g.innerHTML = '';
   var s = document.getElementById('dSeason'); if(s) s.textContent = '—';
   document.getElementById('upgradeNote').textContent = '';
-  document.getElementById('affName').textContent = '—';
-  document.getElementById('affWhy').textContent = '';
 }
 function resetDIYInputs(){
   document.getElementById('dExp').value  = '1.00';

@@ -37,6 +37,7 @@ custom domain → Email Routing → GSC).
 
 ## Status
 
-Live-phase prep: placeholders for AdSense publisher ID (`ads.txt`) and Amazon Associates
-tag are pending account registration. Content expansion (Pricing / By Region / seasonal
-guides) in progress toward a broader topical cluster.
+Live-phase prep: placeholder for the AdSense publisher ID (`ads.txt`) is pending account
+registration. Affiliate/referral links are limited to the "Compare Local Lawn Pros" provider
+cards. Content expansion (Pricing / By Region / seasonal guides) in progress toward a
+broader topical cluster.
