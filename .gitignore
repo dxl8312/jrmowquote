@@ -12,3 +12,6 @@ generated-images/
 node_modules/
 venv/
 .venv/
+
+# Local-only preview server (mimics CF Pages pretty URLs; never deploy)
+preview_server.py
