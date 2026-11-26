@@ -81,7 +81,13 @@
         header.nav a.btn:hover{background:#c9f26a;color:var(--green-900);text-decoration:none}
         @media(max-width:1140px){header.nav .wrap{gap:14px}header.nav nav{gap:12px;font-size:12.5px}}
         @media(max-width:980px){header.nav nav{display:none}}
-</style>
+
+        /* P8-1B: wide tables scroll locally on small screens instead of overflowing the page */
+        @media (max-width:767px){
+            .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0;border-radius:12px}
+            .tbl-scroll table.bench{min-width:540px;margin:0}
+        }
+        </style>
 
     <script type="application/ld+json">
     {
@@ -97,7 +103,7 @@
         { "@type": "Question", "name": "What should I charge per square foot?",
           "acceptedAnswer": { "@type": "Answer", "text": "About $0.011 to $0.012 on a 5,000 sq ft lot, $0.009 at 10,000 sq ft and $0.005 at a full acre. A single flat per square foot rate is a common pricing mistake: it makes small lots unprofitable after drive time and makes acreage quotes lose the job. Quote per visit by size band instead." } },
         { "@type": "Question", "name": "How much does my region change what I can charge?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Substantially. Regional multipliers run from 0.83 times the national average in Oklahoma to 1.86 times in Hawaii, with California at 1.40 and Massachusetts at 1.48. The same acre that prices at $235 nationally is $195 in Oklahoma and $437 in Hawaii." } },
+          "acceptedAnswer": { "@type": "Answer", "text": "Substantially. Regional multipliers run from 0.838 times the national average in Oklahoma to 1.86 times in Hawaii, with California at 1.379 and Massachusetts at 1.486. The same acre that prices at $235 nationally is $197 in Oklahoma and $437 in Hawaii." } },
         { "@type": "Question", "name": "Why does a small lawn cost more per square foot than a large one?",
           "acceptedAnswer": { "@type": "Answer", "text": "Because drive time, unloading and equipment setup cost the same regardless of lawn size, so the fixed cost is recovered from a smaller area. A 2,000 sq ft city lot hitting the $35 minimum works out to about $762 per acre equivalent, while a full acre prices at $235. That is why a job minimum exists." } }
       ]
@@ -155,7 +161,8 @@
     </div>
 
     <h2>Pricing without the guesswork</h2>
-    <p>Our <a href="/methodology">methodology</a> breaks pricing into transparent parts: a per-sq-ft base rate, condition / terrain / obstacle multipliers, recurring-plan discounts, and a regional cost-of-living index. As a pro you can do the reverse — plug <strong>your</strong> actual numbers into the same model to sanity-check a bid before you send it.</p>
+    <p>Our <a href="/methodology">methodology</a> breaks pricing into transparent parts: an <strong>anchor rate</strong> at 5,000 sq ft adjusted by a <strong>size-efficiency curve</strong>, condition / terrain / obstacle multipliers, recurring-plan discounts, and a regional cost-of-living index. As a pro you can do the reverse — plug <strong>your</strong> actual numbers into the same model to sanity-check a bid before you send it.</p>
+    <p>Working back from a cost and a target gross margin? The <a href="/tools/profit-margin-calculator">profit margin calculator</a> uses your costs and target margin to calculate the required quote.</p>
     <ul>
         <li><strong>Small, flat, easy-access lawns:</strong> price near the low end of the published range.</li>
         <li><strong>Steep, obstacle-heavy, or overgrown lawns:</strong> the terrain and condition multipliers justify a premium — and customers can see why.</li>
@@ -172,7 +179,7 @@
 
     <h2 id="benchmarks">What the market pays, by lawn size</h2>
     <p>These are the national-average figures our calculator produces for a <strong>single one-off mow</strong> on flat ground with normal grass and few obstacles — at a 1.00 regional multiplier and a $35 job minimum. Use them as your anchor, then adjust with the multipliers below.</p>
-    <table class="bench">
+    <div class="tbl-scroll"><table class="bench">
         <thead><tr><th>Lawn size</th><th>Per visit</th><th>Per sq ft</th></tr></thead>
         <tbody>
             <tr><td>5,000 sq ft</td><td>$58</td><td>$0.0115</td></tr>
@@ -183,12 +190,12 @@
             <tr><td>1 acre (43,560 sq ft)</td><td>$235</td><td>$0.0054</td></tr>
             <tr><td>10 acres</td><td>$1,049</td><td>$0.0024</td></tr>
         </tbody>
-    </table>
+    </table></div>
     <p style="font-size:14px;color:var(--muted);margin-top:-10px">Note the shape of the curve: the per-sq-ft rate <strong>halves</strong> between a 5,000 sq ft lot and a full acre. Your drive time and setup are fixed, so charging a flat per-sq-ft rate overprices big lots and underprices small ones.</p>
 
     <h2 id="per-sqft">Per-square-foot rates, by service</h2>
     <p>The same calculator, quoted the way a rate card is normally written. Read the middle columns as <em>rates at that specific size</em> — they are not constants, and that is the whole point.</p>
-    <table class="bench">
+    <div class="tbl-scroll"><table class="bench">
         <thead><tr><th>Service</th><th>$/sq ft @ 5,000</th><th>$/sq ft @ 10,000</th><th>Job @ 5,000</th><th>Job @ 10,000</th></tr></thead>
         <tbody>
             <tr><td>Mowing (per visit)</td><td>$0.0115</td><td>$0.0090</td><td>$58</td><td>$90</td></tr>
@@ -199,7 +206,7 @@
             <tr><td>Leaf removal</td><td>$0.0300</td><td>$0.0235</td><td>$150</td><td>$235</td></tr>
             <tr><td>Overseeding</td><td>$0.1000</td><td>$0.0785</td><td>$500</td><td>$785</td></tr>
         </tbody>
-    </table>
+    </table></div>
     <p style="font-size:14px;color:var(--muted);margin-top:-10px">Mulch refresh ($150) and yard cleanup ($200) are quoted <strong>flat</strong>, not per square foot, because they scale with bed area and debris volume rather than lawn size. Quote them flat.</p>
 
     <div class="callout"><strong>Careful with per-square-foot numbers you read online.</strong> Widely circulated rate cards put aeration at $0.005–$0.012/sq ft, which would price a 5,000 sq ft lawn at $25–$60 — while the published 2026 US range for that exact job is $107–$202. The discrepancy is almost always the same mistake: a rate derived from large jobs, applied to a small one, with the fixed cost left out. This calculator applies a $100 aeration minimum for precisely this reason.</div>
@@ -210,7 +217,7 @@
         <details><summary>Should I charge more for overgrown lawns?</summary><div class="ans">Yes, and more than most pros dare to. In our model <b>tall grass carries a 1.45× multiplier (+45%)</b> and <b>severely overgrown grass 1.9× (+90%)</b>, because the mower needs multiple passes, runs slower and the clippings have to be handled. On a 5,000 sq ft lawn that turns a $58 cut into $83 or $109. Quote the first visit as a one-off <b>cleanup rate</b>, then drop to maintenance pricing — customers accept this far more readily when you name the extra passes out loud.</div></details>
         <details><summary>How do I price lawn mowing for a new customer?</summary><div class="ans">Six steps, same order every time:<br><b>1.</b> Measure or estimate the lawn in square feet — satellite imagery first, walk it if the lot is irregular.<br><b>2.</b> Read the base price off the table above for that size.<br><b>3.</b> Apply the condition multiplier: short 0.9×, tall 1.45×, overgrown 1.9×.<br><b>4.</b> Apply terrain (gentle +10%, moderate +20%, steep +35%) and obstacles (moderate +15%, heavy +30%).<br><b>5.</b> Apply the frequency discount if they want recurring service.<br><b>6.</b> Check the result against your minimum, and walk the property before you commit to a number. Our <a href="/">calculator</a> runs these exact steps — enter the property, then read the breakdown instead of guessing.</div></details>
         <details><summary>What should I charge per square foot?</summary><div class="ans">About <b>$0.011–$0.012</b> on a 5,000 sq ft lot, <b>$0.009</b> at 10,000 sq ft and <b>$0.005</b> at a full acre. A single flat $/sq ft number is the most common pricing mistake in this trade: it makes small lots unprofitable after drive time and makes acreage quotes lose the job. Quote per visit by size band, not per square foot.</div></details>
-        <details><summary>How much does my region change what I can charge?</summary><div class="ans">A lot. Our regional multipliers run from <b>0.83×</b> the national average in Oklahoma to <b>1.86×</b> in Hawaii, with California at 1.40× and Massachusetts at 1.48×. The same acre that prices at $235 nationally is <b>$195 in Oklahoma and $437 in Hawaii</b>. If you are pricing against national blog numbers without a regional adjustment, you are either leaving money on the table or bidding above the local market.</div></details>
+        <details><summary>How much does my region change what I can charge?</summary><div class="ans">A lot. Our regional multipliers run from <b>0.838×</b> the national average in Oklahoma to <b>1.86×</b> in Hawaii, with California at 1.379× and Massachusetts at 1.486×. The same acre that prices at $235 nationally is <b>$197 in Oklahoma and $437 in Hawaii</b>. If you are pricing against national blog numbers without a regional adjustment, you are either leaving money on the table or bidding above the local market.</div></details>
         <details><summary>Why does a small lawn cost more per square foot than a large one?</summary><div class="ans">It is the reverse — a small lawn is worth <b>more</b> per square foot. A 2,000 sq ft city lot hits the $35 minimum, which works out to about <b>$762 per acre equivalent</b>, while a full acre prices at $235. Drive time, unloading and equipment setup cost the same no matter how little grass there is, so the fixed cost has to be recovered from a smaller area. This is exactly why a job minimum exists and why quoting by the square foot alone will bankrupt you on small lots.</div></details>
     </div>
 

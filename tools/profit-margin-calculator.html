@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profit Margin Calculator — Margin, Markup &amp; Required Quote | JrMowQuote</title>
+    <meta name="description" content="Free profit margin calculator. Enter your own revenue and costs to see margin and markup, or a target margin to find the required quote. No industry benchmark supplied." />
+    <meta name="keywords" content="profit margin calculator, markup calculator, gross margin, required quote" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://jrmowquote.com/tools/profit-margin-calculator" />
+    <meta property="og:title" content="Profit Margin Calculator — Margin, Markup &amp; Required Quote" />
+    <meta property="og:description" content="Calculate margin, markup and the quote needed for a target margin from your own numbers." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://jrmowquote.com/tools/profit-margin-calculator" />
+    <meta name="twitter:card" content="summary" />
+
+    <style>
+        :root{--green-900:#14361f;--green-700:#1f7a3d;--green-600:#2e9e54;--green-100:#e7f5ec;--lime:#8bd66f;--ink:#1a241c;--muted:#5c6b60;--line:#e2e8e3;--bg:#f6faf7;--card:#fff;--shadow:0 6px 24px rgba(20,54,31,.08);--radius:16px;--draft:#7a2030}
+        *{box-sizing:border-box}
+        body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.7}
+        a{color:var(--green-700);text-decoration:none}
+        a:hover{text-decoration:underline}
+        .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+        .review-banner{background:var(--draft);color:#fff;padding:10px 16px;text-align:center;font-size:.9rem;font-weight:700;line-height:1.4}
+        header.nav{background:var(--green-900);color:#fff;position:sticky;top:0;z-index:60;box-shadow:0 1px 0 rgba(255,255,255,.07)}
+        header.nav .wrap{max-width:1080px;margin:0 auto;padding:0 20px;height:60px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+        header.nav .brand{display:flex;align-items:center;gap:8px;flex:0 0 auto;margin:0;font-weight:800;font-size:18px;line-height:1;color:#fff;text-decoration:none;white-space:nowrap}
+        header.nav .brand:hover{color:#fff;text-decoration:none}
+        header.nav .brand .dot{display:inline-block;flex:0 0 auto;width:12px;height:12px;border-radius:50%;background:var(--lime)}
+        header.nav nav{display:flex;align-items:center;gap:16px;flex:1 1 auto;min-width:0;font-size:13px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+        header.nav nav::-webkit-scrollbar{display:none}
+        header.nav nav a{flex:0 0 auto;margin:0;color:#cfe3d6;text-decoration:none;white-space:nowrap}
+        header.nav nav a:hover{color:#fff;text-decoration:none}
+        header.nav a.btn{display:inline-block;flex:0 0 auto;margin:0;padding:9px 16px;border-radius:10px;background:var(--lime);color:var(--green-900);font-size:14px;font-weight:700;line-height:1.25;white-space:nowrap;text-decoration:none}
+        header.nav a.btn:hover{background:#c9f26a;color:var(--green-900);text-decoration:none}
+        @media(max-width:1140px){header.nav .wrap{gap:14px}header.nav nav{gap:12px;font-size:12.5px}}
+        @media(max-width:980px){header.nav nav{display:none}}
+        .hero{background:var(--green-900);color:#eafff2;padding:46px 0 38px}
+        .hero h1{margin:0 0 10px;font-size:38px;color:#fff;line-height:1.2}
+        .hero p{margin:0;color:#bfe0cd;max-width:760px;font-size:17px}
+        main{padding:26px 0 50px}
+        .breadcrumb{font-size:14px;color:var(--muted);padding:0 0 16px}
+        .meta{color:var(--muted);font-size:.88rem;margin:0 0 14px}
+        .callout{background:var(--green-100);border-left:4px solid var(--green-700);padding:14px 18px;border-radius:10px;margin:0 0 20px}
+        .calc{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;margin:0 0 20px}
+        .calc h2{margin:0 0 4px;font-size:22px}
+        .calc .sub{color:var(--muted);margin:0 0 20px;font-size:14px}
+        .field{margin:0 0 16px}
+        .field label{display:block;font-weight:600;font-size:14px;margin-bottom:6px}
+        .field input,.field select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;font-size:15px;background:#fff}
+        .field input:focus,.field select:focus{outline:2px solid var(--green-600);border-color:var(--green-600)}
+        .field .hint{font-weight:400;color:var(--muted);font-size:12px;display:block;margin-top:5px}
+        .err{color:#a3262b;font-size:13px;display:block;min-height:1em;margin-top:4px}
+        .row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+        [hidden]{display:none!important}
+        .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+        .btn{display:inline-block;background:var(--green-600);color:#fff;padding:11px 20px;border-radius:10px;font-weight:700;border:none;cursor:pointer;font-size:15px}
+        .btn:hover{background:var(--green-700);text-decoration:none}
+        .result{margin-top:20px;background:var(--green-100);border:1px solid #cdebd5;border-radius:14px;padding:22px}
+        .result .big{font-size:30px;font-weight:800;color:var(--green-900);text-align:center;margin-bottom:14px}
+        .result .big.loss,.loss{color:#a3262b}
+        .result p{margin:8px 0 14px;font-size:14px}
+        .result table{width:100%;border-collapse:collapse}
+        .result th,.result td{padding:10px 14px;font-size:14px;border-bottom:1px solid var(--line);text-align:left}
+        .result th{background:var(--green-100);color:var(--green-900);font-weight:600}
+        .result tr:last-child th,.result tr:last-child td{border-bottom:none}
+        .result .hint{color:var(--muted);font-size:12px}
+        .formula-block{background:#f3f8f5;border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;white-space:pre-wrap;color:#33483a}
+        .disclaimer{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;margin-top:22px}
+        footer{background:var(--green-900);color:#cfe3d6;padding:24px 0;font-size:14px;text-align:center}
+        footer a{color:#bfe0cd}
+        @media(max-width:720px){.row{grid-template-columns:1fr;gap:0}.hero h1{font-size:30px}.hero{padding:34px 0 30px}.calc{padding:18px 16px}.result{padding:16px}.result .big{font-size:24px}main{padding:20px 0 40px}}
+    </style>
+</head>
+<body>
+
+
+<header class="nav">
+    <div class="wrap">
+        <a class="brand" href="/"><span class="dot"></span>JrMowQuote</a>
+        <nav>
+            <a href="/#calculator">Calculator</a>
+            <a href="/pages/diy-vs-hire">DIY or Hire</a>
+            <a href="/pages/how-often-to-mow">How Often to Mow</a>
+            <a href="/#pricing">Pricing</a>
+            <a href="/#regions">By Region</a>
+            <a href="/#quote-gen">Quote Tool</a>
+            <a href="/pages/for-lawn-pros">For Pros</a>
+            <a href="/methodology">Methodology</a>
+        </nav>
+        <a class="btn" href="/#calculator">Calculate Now</a>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="wrap">
+        <h1>Profit Margin Calculator</h1>
+        <p>Enter your own revenue and your own costs to see margin and markup. This tool supplies no industry benchmark or typical cost.</p>
+    </div>
+</section>
+
+<main class="wrap">
+    <p class="breadcrumb"><a href="/">Home</a> › Profit Margin Calculator</p>
+    <p class="meta">Local review tool · URL: /tools/profit-margin-calculator · No data is stored or transmitted. Not in main navigation.</p>
+    <div class="callout"><strong>Local review tool.</strong> This page is a local, unpublished review copy. It is not linked from site navigation or the sitemap and must not be treated as a live page.</div>
+
+    <section class="calc">
+        <h2>Mode</h2>
+        <p class="sub">Choose what you want to calculate.</p>
+        <div class="field">
+            <label for="mode">Calculate</label>
+            <select id="mode">
+                <option value="margin">Revenue + costs → margin</option>
+                <option value="quote">Costs + your target margin → required quote</option>
+            </select>
+        </div>
+    </section>
+
+    <section class="calc">
+        <h2>Your numbers</h2>
+        <p class="sub">Blank cost fields are treated as 0. No cost value is supplied for you.</p>
+
+        <div class="field" id="revenue-field">
+            <label for="revenue">Revenue / quote for the job</label>
+            <input type="number" id="revenue" min="0" step="any" placeholder="enter a number">
+            <span class="err" id="revenue-err" aria-live="polite"></span>
+        </div>
+
+        <div class="row">
+            <div class="field"><label for="c1">Labor</label><input type="number" id="c1" min="0" step="any" placeholder="0 if blank"><span class="err" id="c1-err" aria-live="polite"></span></div>
+            <div class="field"><label for="c2">Materials</label><input type="number" id="c2" min="0" step="any" placeholder="0 if blank"><span class="err" id="c2-err" aria-live="polite"></span></div>
+            <div class="field"><label for="c3">Fuel / travel</label><input type="number" id="c3" min="0" step="any" placeholder="0 if blank"><span class="err" id="c3-err" aria-live="polite"></span></div>
+            <div class="field"><label for="c4">Equipment / tools</label><input type="number" id="c4" min="0" step="any" placeholder="0 if blank"><span class="err" id="c4-err" aria-live="polite"></span></div>
+            <div class="field"><label for="c5">Admin / overhead</label><input type="number" id="c5" min="0" step="any" placeholder="0 if blank"><span class="err" id="c5-err" aria-live="polite"></span></div>
+        </div>
+
+        <div class="field" id="target-field" hidden>
+            <label for="target">Your target gross margin (%)</label>
+            <input type="number" id="target" min="0" step="any" placeholder="percent, less than 100">
+            <span class="hint">Your own target. No recommended value is supplied.</span>
+            <span class="err" id="target-err" aria-live="polite"></span>
+        </div>
+
+        <div class="cta"><button type="button" class="btn" id="calc-btn">Calculate</button></div>
+        <p class="err" id="form-err" aria-live="polite"></p>
+    </section>
+
+    <section class="calc">
+        <h2>Result</h2>
+        <div class="result" id="results" aria-live="polite">Enter your numbers and choose Calculate.</div>
+    </section>
+
+    <section class="calc">
+        <h2>How the calculation works</h2>
+        <div class="formula-block">total cost   = sum of your cost items
+gross profit = revenue - total cost
+margin %     = gross profit / revenue x 100
+markup %     = gross profit / total cost x 100   (needs cost &gt; 0)
+
+required quote = total cost / (1 - target margin / 100)</div>
+        <p class="hint" style="color:var(--muted);font-size:13px;margin:12px 0 0">Blank cost fields are treated as 0 and noted in the result. A target margin of 100% or more is rejected to avoid division by zero.</p>
+    </section>
+
+    <p class="disclaimer">Results reflect only the revenue and costs you entered. We provide no typical margins, cost benchmarks or pricing advice. Judge the outcome against your own business and local market.</p>
+</main>
+
+<footer>
+    <p style="margin:0 0 10px">JrMowQuote — Free Lawn Mowing Cost Calculator · Operated by Jarenson (觉然轩) · Estimates only, not a binding quote.</p>
+    <p style="margin:0">Local review page — not published, not linked, no production changes made.</p>
+</footer>
+
+<script>
+(function () {
+    "use strict";
+
+    // ---- Inlined pure calculation core (from prototype core.js) ----
+    function isFiniteNumber(x) { return typeof x === "number" && isFinite(x); }
+    function validate(value, opts) {
+        opts = opts || {};
+        var field = opts.field || "Value";
+        if (value === "" || value === null || typeof value === "undefined") return { ok: false, error: field + " is required." };
+        var n = typeof value === "number" ? value : Number(value);
+        if (!isFiniteNumber(n)) return { ok: false, error: field + " must be a number." };
+        var min = typeof opts.min === "number" ? opts.min : (opts.allowZero ? 0 : Number.MIN_VALUE);
+        if (n < min) return { ok: false, error: opts.allowZero ? field + " cannot be negative." : field + " must be greater than 0." };
+        if (typeof opts.max === "number" && n > opts.max) return { ok: false, error: field + " is above the accepted entry limit." };
+        return { ok: true, value: n };
+    }
+    function sumAreas(values) { return values.reduce(function (a, b) { return a + b; }, 0); }
+    function profitMargin(revenue, costs) {
+        var totalCost = costs.reduce(function (a, b) { return a + b; }, 0);
+        var grossProfit = revenue - totalCost;
+        return {
+            totalCost: totalCost,
+            grossProfit: grossProfit,
+            marginPct: (grossProfit / revenue) * 100,
+            markupPct: totalCost > 0 ? (grossProfit / totalCost) * 100 : null,
+            isLoss: grossProfit < 0
+        };
+    }
+    function requiredQuote(totalCost, targetMarginPct) { return totalCost / (1 - targetMarginPct / 100); }
+
+    // ---- Page interaction (button-triggered, as defined) ----
+    var mode = document.getElementById("mode");
+    var results = document.getElementById("results");
+    var formErr = document.getElementById("form-err");
+    var ids = ["revenue", "c1", "c2", "c3", "c4", "c5", "target"];
+    var costLabels = {
+        c1: "Labor", c2: "Materials", c3: "Fuel / travel",
+        c4: "Equipment / tools", c5: "Admin / overhead"
+    };
+    function clearErrors() {
+        ids.forEach(function (id) { document.getElementById(id + "-err").textContent = ""; });
+        formErr.textContent = "";
+    }
+    function showFields() {
+        document.getElementById("revenue-field").hidden = mode.value !== "margin";
+        document.getElementById("target-field").hidden = mode.value !== "quote";
+        clearErrors();
+    }
+    mode.addEventListener("change", showFields);
+    showFields();
+
+    function readCost(id) {
+        var raw = document.getElementById(id).value;
+        if (raw === "") return 0;
+        var v = validate(raw, { field: costLabels[id] || id, allowZero: true });
+        if (!v.ok) document.getElementById(id + "-err").textContent = v.error;
+        return v.ok ? v.value : null;
+    }
+    function costInputs() { return ["c1", "c2", "c3", "c4", "c5"].map(readCost); }
+
+    document.getElementById("calc-btn").addEventListener("click", function () {
+        clearErrors();
+        var costs = costInputs();
+        if (costs.some(function (x) { return x === null; })) {
+            results.textContent = "Fix the highlighted cost fields and try again.";
+            return;
+        }
+        var blankCost = ["c1", "c2", "c3", "c4", "c5"].some(function (id) { return document.getElementById(id).value === ""; });
+        var note = blankCost ? '<p class="hint">Blank cost fields were counted as 0.</p>' : "";
+        var totalCost = sumAreas(costs);
+
+        if (mode.value === "quote") {
+            var t = validate(document.getElementById("target").value, { field: "Target margin", allowZero: true, max: 99.9999 });
+            if (!t.ok) { document.getElementById("target-err").textContent = t.error; results.textContent = "Fix the target margin and try again."; return; }
+            var quote = requiredQuote(totalCost, t.value);
+            results.innerHTML =
+                '<div class="big">Required quote: ' + quote.toFixed(2) + "</div>" +
+                "<table><tbody>" +
+                "<tr><th>Your total cost</th><td>" + totalCost.toFixed(2) + "</td></tr>" +
+                "<tr><th>Your target margin</th><td>" + t.value + "%</td></tr>" +
+                "</tbody></table>" + note;
+            return;
+        }
+
+        var rv = validate(document.getElementById("revenue").value, { field: "Revenue" });
+        if (!rv.ok) { document.getElementById("revenue-err").textContent = rv.error; results.textContent = "Fix the revenue field and try again."; return; }
+
+        var m = profitMargin(rv.value, costs);
+        var markup = m.markupPct === null ? "no cost base" : m.markupPct.toFixed(2) + "%";
+        var status = m.isLoss
+            ? '<p class="loss">Loss of ' + Math.abs(m.grossProfit).toFixed(2) + " on these numbers — this job is at a loss.</p>"
+            : "<p>Profit of " + m.grossProfit.toFixed(2) + " on these numbers.</p>";
+        results.innerHTML =
+            '<div class="big' + (m.isLoss ? " loss" : "") + '">Margin: ' + m.marginPct.toFixed(2) + "%</div>" +
+            status +
+            "<table><tbody>" +
+            "<tr><th>Your total cost</th><td>" + totalCost.toFixed(2) + "</td></tr>" +
+            "<tr><th>Gross profit</th><td>" + m.grossProfit.toFixed(2) + "</td></tr>" +
+            "<tr><th>Margin %</th><td>" + m.marginPct.toFixed(2) + "%</td></tr>" +
+            "<tr><th>Markup %</th><td>" + markup + "</td></tr>" +
+            "</tbody></table>" + note;
+    });
+})();
+</script>
+</body>
+</html>

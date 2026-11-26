@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mulch Calculator — Bags &amp; Cost from Your Numbers | JrMowQuote</title>
+    <meta name="description" content="Free mulch calculator. Enter your bed area, chosen depth, bag size from the label and your price to get volume, whole bags and cost." />
+    <meta name="keywords" content="mulch calculator, mulch bags, cubic yard calculator, mulch cost" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://jrmowquote.com/tools/mulch-calculator" />
+    <meta property="og:title" content="Mulch Calculator — Bags &amp; Cost from Your Numbers" />
+    <meta property="og:description" content="Convert your area, depth, bag spec and price into volume, bags and cost." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://jrmowquote.com/tools/mulch-calculator" />
+    <meta name="twitter:card" content="summary" />
+
+    <style>
+        :root{--green-900:#14361f;--green-700:#1f7a3d;--green-600:#2e9e54;--green-100:#e7f5ec;--lime:#8bd66f;--ink:#1a241c;--muted:#5c6b60;--line:#e2e8e3;--bg:#f6faf7;--card:#fff;--shadow:0 6px 24px rgba(20,54,31,.08);--radius:16px;--draft:#7a2030}
+        *{box-sizing:border-box}
+        body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.7}
+        a{color:var(--green-700);text-decoration:none}
+        a:hover{text-decoration:underline}
+        .wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+        .review-banner{background:var(--draft);color:#fff;padding:10px 16px;text-align:center;font-size:.9rem;font-weight:700;line-height:1.4}
+        header.nav{background:var(--green-900);color:#fff;position:sticky;top:0;z-index:60;box-shadow:0 1px 0 rgba(255,255,255,.07)}
+        header.nav .wrap{max-width:1080px;margin:0 auto;padding:0 20px;height:60px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+        header.nav .brand{display:flex;align-items:center;gap:8px;flex:0 0 auto;margin:0;font-weight:800;font-size:18px;line-height:1;color:#fff;text-decoration:none;white-space:nowrap}
+        header.nav .brand:hover{color:#fff;text-decoration:none}
+        header.nav .brand .dot{display:inline-block;flex:0 0 auto;width:12px;height:12px;border-radius:50%;background:var(--lime)}
+        header.nav nav{display:flex;align-items:center;gap:16px;flex:1 1 auto;min-width:0;font-size:13px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+        header.nav nav::-webkit-scrollbar{display:none}
+        header.nav nav a{flex:0 0 auto;margin:0;color:#cfe3d6;text-decoration:none;white-space:nowrap}
+        header.nav nav a:hover{color:#fff;text-decoration:none}
+        header.nav a.btn{display:inline-block;flex:0 0 auto;margin:0;padding:9px 16px;border-radius:10px;background:var(--lime);color:var(--green-900);font-size:14px;font-weight:700;line-height:1.25;white-space:nowrap;text-decoration:none}
+        header.nav a.btn:hover{background:#c9f26a;color:var(--green-900);text-decoration:none}
+        @media(max-width:1140px){header.nav .wrap{gap:14px}header.nav nav{gap:12px;font-size:12.5px}}
+        @media(max-width:980px){header.nav nav{display:none}}
+        .hero{background:var(--green-900);color:#eafff2;padding:46px 0 38px}
+        .hero h1{margin:0 0 10px;font-size:38px;color:#fff;line-height:1.2}
+        .hero p{margin:0;color:#bfe0cd;max-width:760px;font-size:17px}
+        main{padding:26px 0 50px}
+        .breadcrumb{font-size:14px;color:var(--muted);padding:0 0 16px}
+        .meta{color:var(--muted);font-size:.88rem;margin:0 0 14px}
+        .callout{background:var(--green-100);border-left:4px solid var(--green-700);padding:14px 18px;border-radius:10px;margin:0 0 20px}
+        .calc{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px;margin:0 0 20px}
+        .calc h2{margin:0 0 4px;font-size:22px}
+        .calc .sub{color:var(--muted);margin:0 0 20px;font-size:14px}
+        .field{margin:0 0 16px}
+        .field label{display:block;font-weight:600;font-size:14px;margin-bottom:6px}
+        .field input,.field select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;font-size:15px;background:#fff}
+        .field input:focus,.field select:focus{outline:2px solid var(--green-600);border-color:var(--green-600)}
+        .field .hint{font-weight:400;color:var(--muted);font-size:12px;display:block;margin-top:5px}
+        .err{color:#a3262b;font-size:13px;display:block;min-height:1em;margin-top:4px}
+        .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:8px}
+        .btn{display:inline-block;background:var(--green-600);color:#fff;padding:11px 20px;border-radius:10px;font-weight:700;border:none;cursor:pointer;font-size:15px}
+        .btn:hover{background:var(--green-700);text-decoration:none}
+        .result{margin-top:20px;background:var(--green-100);border:1px solid #cdebd5;border-radius:14px;padding:22px}
+        .result .big{font-size:30px;font-weight:800;color:var(--green-900);text-align:center;margin-bottom:14px}
+        .result table{width:100%;border-collapse:collapse}
+        .result th,.result td{padding:10px 14px;font-size:14px;border-bottom:1px solid var(--line);text-align:left}
+        .result th{background:var(--green-100);color:var(--green-900);font-weight:600}
+        .result tr:last-child th,.result tr:last-child td{border-bottom:none}
+        .result .hint{color:var(--muted);font-size:12px}
+        .formula-block{background:#f3f8f5;border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:13px;white-space:pre-wrap;color:#33483a}
+        .disclaimer{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;margin-top:22px}
+        footer{background:var(--green-900);color:#cfe3d6;padding:24px 0;font-size:14px;text-align:center}
+        footer a{color:#bfe0cd}
+        @media(max-width:720px){.hero h1{font-size:30px}.hero{padding:34px 0 30px}.calc{padding:18px 16px}.result{padding:16px}.result .big{font-size:24px}main{padding:20px 0 40px}}
+    </style>
+</head>
+<body>
+
+
+<header class="nav">
+    <div class="wrap">
+        <a class="brand" href="/"><span class="dot"></span>JrMowQuote</a>
+        <nav>
+            <a href="/#calculator">Calculator</a>
+            <a href="/pages/diy-vs-hire">DIY or Hire</a>
+            <a href="/pages/how-often-to-mow">How Often to Mow</a>
+            <a href="/#pricing">Pricing</a>
+            <a href="/#regions">By Region</a>
+            <a href="/#quote-gen">Quote Tool</a>
+            <a href="/pages/for-lawn-pros">For Pros</a>
+            <a href="/methodology">Methodology</a>
+        </nav>
+        <a class="btn" href="/#calculator">Calculate Now</a>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="wrap">
+        <h1>Mulch Calculator</h1>
+        <p>You supply the area, your chosen depth, the bag spec from the package and your price. The tool converts them to volume, bags and cost.</p>
+    </div>
+</section>
+
+<main class="wrap">
+    <p class="breadcrumb"><a href="/">Home</a> › Mulch Calculator</p>
+    <p class="meta">Local review tool · URL: /tools/mulch-calculator · No data is stored or transmitted.</p>
+    <div class="callout"><strong>Local review tool.</strong> This page is a local, unpublished review copy. It is not linked from site navigation or the sitemap and must not be treated as a live page.</div>
+
+    <section class="calc">
+        <h2>Your inputs</h2>
+        <p class="sub">All values come from you. No bag size, depth or price is assumed.</p>
+
+        <div class="field">
+            <label for="area">Bed area</label>
+            <input type="number" id="area" min="0" step="any" placeholder="enter a number">
+            <span class="hint">Square feet.</span>
+            <span class="err" id="area-err" aria-live="polite"></span>
+        </div>
+
+        <div class="field">
+            <label for="depth">Chosen depth</label>
+            <input type="number" id="depth" min="0" step="any" placeholder="inch">
+            <span class="hint">Inches. This is your choice — the tool does not recommend a depth.</span>
+            <span class="err" id="depth-err" aria-live="polite"></span>
+        </div>
+
+        <div class="field">
+            <label for="bag">Volume per bag</label>
+            <input type="number" id="bag" min="0" step="any" placeholder="cu ft / bag">
+            <span class="hint">Read this from the package label. No typical size is assumed.</span>
+            <span class="err" id="bag-err" aria-live="polite"></span>
+        </div>
+
+        <div class="field">
+            <label for="price">Price per bag</label>
+            <input type="number" id="price" min="0" step="any" placeholder="your currency / bag">
+            <span class="hint">Your own price. Enter 0 if the material is free.</span>
+            <span class="err" id="price-err" aria-live="polite"></span>
+        </div>
+
+        <div class="cta"><button type="button" class="btn" id="calc-btn">Calculate</button></div>
+        <p class="err" id="form-err" aria-live="polite"></p>
+    </section>
+
+    <section class="calc">
+        <h2>Result</h2>
+        <div class="result" id="results" aria-live="polite">Fill in all four fields and choose Calculate.</div>
+    </section>
+
+    <section class="calc">
+        <h2>How the calculation works</h2>
+        <div class="formula-block">depth (ft) = depth (in) / 12
+cu ft       = area (sq ft) x depth (ft)
+cu yd       = cu ft / 27
+bags        = ceil(cu ft / bag cu ft)
+cost        = bags x price per bag</div>
+        <p class="hint" style="color:var(--muted);font-size:13px;margin:12px 0 0">1 ft = 12 in and 1 cu yd = 27 cu ft are unit definitions. Bags are rounded up to whole bags. No waste or settling allowance is included.</p>
+    </section>
+
+    <p class="disclaimer">All results are based only on the parameters you entered. This tool does not recommend a depth, supply bag sizes or prices, or include waste and settling. Follow the product label and your own situation.</p>
+</main>
+
+<footer>
+    <p style="margin:0 0 10px">JrMowQuote — Free Lawn Mowing Cost Calculator · Operated by Jarenson (觉然轩) · Estimates only, not a binding quote.</p>
+    <p style="margin:0">Local review page — not published, not linked, no production changes made.</p>
+</footer>
+
+<script>
+(function () {
+    "use strict";
+
+    // ---- Inlined pure calculation core (from prototype core.js) ----
+    var CUFT_PER_CUYD = 27;
+    var IN_PER_FT = 12;
+    function isFiniteNumber(x) { return typeof x === "number" && isFinite(x); }
+    function validate(value, opts) {
+        opts = opts || {};
+        var field = opts.field || "Value";
+        if (value === "" || value === null || typeof value === "undefined") return { ok: false, error: field + " is required." };
+        var n = typeof value === "number" ? value : Number(value);
+        if (!isFiniteNumber(n)) return { ok: false, error: field + " must be a number." };
+        var min = typeof opts.min === "number" ? opts.min : (opts.allowZero ? 0 : Number.MIN_VALUE);
+        if (n < min) return { ok: false, error: opts.allowZero ? field + " cannot be negative." : field + " must be greater than 0." };
+        if (typeof opts.max === "number" && n > opts.max) return { ok: false, error: field + " is above the accepted entry limit." };
+        return { ok: true, value: n };
+    }
+    function mulchVolume(areaSqFt, depthInches) {
+        var depthFt = depthInches / IN_PER_FT;
+        var cuFt = areaSqFt * depthFt;
+        return { cuFt: cuFt, cuYd: cuFt / CUFT_PER_CUYD };
+    }
+    function mulchBags(cuFt, bagCuFt) { return Math.ceil(cuFt / bagCuFt); }
+    function mulchCost(bags, pricePerBag) { return bags * pricePerBag; }
+
+    // ---- Page interaction (button-triggered, as defined) ----
+    var results = document.getElementById("results");
+    var formErr = document.getElementById("form-err");
+    function clearErrors() {
+        ["area", "depth", "bag", "price"].forEach(function (id) { document.getElementById(id + "-err").textContent = ""; });
+        formErr.textContent = "";
+    }
+    function read(id, label, opts) {
+        var v = validate(document.getElementById(id).value, opts);
+        if (!v.ok) document.getElementById(id + "-err").textContent = v.error;
+        return v.ok ? v.value : null;
+    }
+    document.getElementById("calc-btn").addEventListener("click", function () {
+        clearErrors();
+        var area = read("area", "Area", { field: "Area", max: 1000000 });
+        var depth = read("depth", "Depth", { field: "Depth", max: 24 });
+        var bag = read("bag", "Bag volume", { field: "Bag volume" });
+        var price = read("price", "Price", { field: "Price", allowZero: true });
+        if ([area, depth, bag, price].some(function (x) { return x === null; })) {
+            results.textContent = "Fix the highlighted fields and try again.";
+            return;
+        }
+        var vol = mulchVolume(area, depth);
+        var bags = mulchBags(vol.cuFt, bag);
+        var cost = mulchCost(bags, price);
+        var priceNote = price === 0 ? ' <span class="hint">(price 0 as entered)</span>' : "";
+        results.innerHTML =
+            '<div class="big">' + bags + " bag" + (bags === 1 ? "" : "s") + " needed</div>" +
+            "<table><tbody>" +
+            "<tr><th>Volume (cubic feet)</th><td>" + vol.cuFt.toFixed(2) + " cu ft</td></tr>" +
+            "<tr><th>Volume (cubic yards)</th><td>" + vol.cuYd.toFixed(2) + " cu yd</td></tr>" +
+            "<tr><th>Whole bags (rounded up)</th><td>" + bags + "</td></tr>" +
+            "<tr><th>Cost at your price</th><td>" + cost.toFixed(2) + priceNote + "</td></tr>" +
+            "</tbody></table>";
+    });
+})();
+</script>
+</body>
+</html>

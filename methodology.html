@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Methodology &amp; Sources — Lawn Cost Calculator (2026)</title>
-    <meta name="description" content="How our lawn mowing cost calculator works: the exact pricing formula, state rate indices, season lengths and every 2026 source, with citations." />
+    <meta name="description" content="The exact lawn mowing cost formula: the published size-efficiency curve, worked examples for every lawn size, state rate indices, season lengths, data confidence levels and every 2026 source, with citations." />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://jrmowquote.com/methodology" />
     <meta property="og:title" content="Methodology &amp; Sources — Lawn Cost Calculator" />
@@ -102,7 +102,13 @@
         header.nav a.btn:hover{background:#c9f26a;color:var(--green-900);text-decoration:none}
         @media(max-width:1140px){header.nav .wrap{gap:14px}header.nav nav{gap:12px;font-size:12.5px}}
         @media(max-width:980px){header.nav nav{display:none}}
-</style>
+
+        /* P8-1B: wide tables scroll locally on small screens instead of overflowing the page */
+        @media (max-width:767px){
+            .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0;border-radius:12px}
+            .tbl-scroll table{min-width:560px;margin:0}
+        }
+        </style>
 </head>
 <body>
 
@@ -135,45 +141,119 @@
     <div class="card">
         <div class="banner">
             <span aria-hidden="true">⚠️</span>
-            <div><b>Estimates for planning only — never a binding quote.</b> Figures are built from published 2026 market benchmarks and climate data, then run through a transparent formula. Your real price depends on your exact lawn, access, and local competition. Always confirm with a local provider before you buy.</div>
+            <div><b>Estimates for planning only — never a binding quote.</b> Figures are built from published 2026 market benchmarks and climate data, then run through a transparent formula that includes a <b>size-efficiency curve</b> (section 2). State and provincial rates are cost-of-living <b>proxies, not surveyed lawn-care prices</b> — see the confidence levels in section 5. Your real price depends on your exact lawn, access, and local competition. Always confirm with a local provider before you buy.</div>
         </div>
     </div>
 
     <div class="card">
-        <h2>1. The formula</h2>
-        <p class="lead">The calculator applies a small set of transparent multipliers to a base mowing rate, then adds any selected services.</p>
+        <h2>1. The complete formula</h2>
+        <p class="lead">The calculator applies a small set of transparent multipliers to a <b>size-adjusted anchor rate</b>, then adds any selected services. This is the exact order of operations in <code>index.html</code> — nothing is hidden. The arithmetic path is identical for every region; what differs is the provenance of the inputs: the 51 US indices are reproducible from the published Q3 2026 MERIC/C2ER table, while the 13 Canadian indices are derived from Statistics Canada's <b>2021</b> household-consumption purchasing power parities, re-based to our own population-weighted national average (sections 4–6).</p>
 
-        <h3>Per-visit mowing price</h3>
-        <p><code>mowPerVisit = max(area × baseRate, baseMin) × condition × (1 + terrain) × (1 + obstacles) × (1 − planDiscount) × stateIndex</code></p>
+        <h3>Step 0 — the size-efficiency factor</h3>
+        <p><code>sizeFactor(A) = Math.pow( Math.max(A, 1000) / 5000, −0.35 )</code> &nbsp;where <code>A</code> is lawn area in sq ft. If you need to work out that area first, the <a href="/tools/lawn-area-calculator">lawn area calculator</a> converts length × width — or a rough outline — into sq ft, sq yd and acres.</p>
+        <p>This runs <b>before</b> the job minimum and before every other multiplier. It is the reason a 1-acre lawn prices at about $235 rather than the $501 a flat $0.0115/sq ft would produce. Section 2 publishes the curve in full.</p>
+
+        <h3>Step 1 — per-visit mowing price</h3>
+        <p><code>mowPerVisit = max( A × anchorRate × sizeFactor(A), baseMin ) × condition × (1 + terrain) × (1 + edgeAdj) × (1 − planDiscount) × regionIndex</code></p>
         <ul>
-            <li><b>baseRate / baseMin</b> — base mowing price per sq ft (floor applied for small lawns).</li>
+            <li><b>anchorRate</b> — $0.0115/sq ft (US) or CA$0.011/sq ft (Canada), <b>at the 5,000 sq ft anchor only</b>. This is not a flat rate: the effective rate declines with area because of <code>sizeFactor</code>.</li>
+            <li><b>baseMin</b> — $35 job minimum (CA$35 × 1.3 FX), applied <b>after</b> the size factor. Small lawns are priced by the fixed call-out cost, not by area.</li>
             <li><b>condition</b> — grass height/state: short 0.9 · normal 1.0 · tall 1.45 · overgrown 1.9.</li>
             <li><b>terrain</b> — flat +0% · gentle +10% · moderate +20% · steep +35%.</li>
-            <li><b>obstacles</b> — none +0% · moderate +15% · heavy +30%.</li>
-            <li><b>planDiscount</b> — weekly −15% · bi-weekly −10% · monthly −5% (recurring saves the crew routing time).</li>
-            <li><b>stateIndex</b> — your state/province cost-of-living index ÷ 100.</li>
+            <li><b>edgeAdj</b> — by default the obstacle bucket: none +0% · moderate +15% · heavy +30%. If you enter a measured perimeter <i>P</i>, it <b>replaces</b> the bucket with <code>clamp( (P / (4√A) − 1) × 0.5, 0, 0.45 )</code>, capped at +45%. A square lot has perimeter ≈ 4√A, so a longer, more intricate boundary adds trimming time.</li>
+            <li><b>planDiscount</b> — weekly −15% · bi-weekly −10% · monthly −5% · one-time 0% (recurring saves the crew routing time).</li>
+            <li><b>regionIndex</b> — US: published MERIC/C2ER cost-of-living index ÷ 100 (reproducible from the official table). Canada: Statistics Canada <b>2021</b> household-consumption PPP ÷ its 2021-population-weighted national mean (our modelling choice; official base is Ontario = 1.00), rounded to 3 decimals. <b>Either way this is a price-level proxy, not a surveyed lawn-care price</b> — and the Canadian figure is 2021 data, not a 2026 lawn-service index — see sections 4–5.</li>
         </ul>
 
-        <h3>Recurring vs one-time</h3>
+        <h3>Step 2 — recurring vs one-time</h3>
         <ul>
             <li><b>One-time:</b> annual cost = per-visit price (1 visit).</li>
             <li><b>Recurring:</b> visits per year = <code>visitsPerMonth × seasonMonths</code>; monthly = per-visit × visitsPerMonth; annual = monthly × seasonMonths. So <b>monthly × season = annual</b> always holds.</li>
         </ul>
 
-        <h3>Add-on services</h3>
-        <p><code>serviceCost = max(rate × area, min) × (1 + terrain) × (1 + obstacles) × stateIndex × visitsPerSeason</code> (mulch &amp; yard cleanup use a flat per-visit price instead of a per-sq-ft rate).</p>
+        <h3>Step 3 — add-on services</h3>
+        <p><code>svcPrice = max( rate × A × sizeFactor(A), min × fx ) × (1 + terrain) × (1 + edgeAdj) × regionIndex</code><br><code>serviceCost = svcPrice × applicationsPerSeason</code></p>
+        <p>Per-sq-ft services use the <b>same size factor as mowing</b> — the earlier version of this page omitted it. Mulch refresh and yard cleanup are quoted flat (flatPrice × fx) instead. <code>fx</code> = 1.3 for Canadian dollars on flat prices and minimums, 1.0 for US dollars.</p>
     </div>
 
     <div class="card">
-        <h2>2. Where every input comes from</h2>
-        <table>
+        <h2>2. The size-efficiency curve, published in full</h2>
+        <p class="lead">Drive time, unloading and setup cost roughly the same on every job. Spreading that fixed cost over more grass is why a big lawn costs less <em>per square foot</em> — and why a single flat $/sq ft rate overprices acreage by about 2×.</p>
+        <p><b>The rule:</b> <code>sizeFactor(A) = ( A / 5000 )<sup>−0.35</sup></code> for A ≥ 1,000 sq ft, with A floored at 1,000 below that. The 5,000 sq ft anchor returns exactly 1.000.</p>
+        <ul>
+            <li><b>Why a power curve:</b> it reproduces the published 2026 size bands — roughly $58 at 5,000 sq ft, $90 at 10,000 and $235 at one acre — while keeping the rate smooth with no artificial jumps between size brackets.</li>
+            <li><b>Why −0.35:</b> it is calibrated so the effective $/sq ft roughly halves between a suburban lot and a full acre. <b>It is a model calibration, not a measured market constant</b>, and we disclose it here so it can be audited, challenged or replaced.</li>
+            <li><b>Floor at 1,000 sq ft:</b> below this the factor stops rising (1,000 → 1.759). Very small lawns are governed by the $35 minimum anyway.</li>
+            <li><b>Where the minimum wins:</b> at 2,000 sq ft the curve alone gives $31.70, but the $35 floor applies, so the effective rate is $0.0175/sq ft — <em>higher</em> than the anchor rate. That inversion is real and intentional.</li>
+        </ul>
+        <div class="tbl-scroll"><table>
+            <thead><tr><th>Lawn area</th><th>sizeFactor</th><th>Effective $/sq ft</th><th>One-time, index 1.00</th><th>Weekly plan (−15%)</th><th>Flat $0.0115 would give</th></tr></thead>
+            <tbody>
+                <tr><td>2,000 sq ft</td><td>1.378</td><td>$0.0175 <span class="src">(minimum)</span></td><td><b>$35</b></td><td>$30</td><td>$35</td></tr>
+                <tr><td>5,000 sq ft <span class="pill">anchor</span></td><td>1.000</td><td>$0.0115</td><td><b>$58</b></td><td>$49</td><td>$58</td></tr>
+                <tr><td>7,500 sq ft</td><td>0.868</td><td>$0.0100</td><td><b>$75</b></td><td>$64</td><td>$86</td></tr>
+                <tr><td>10,000 sq ft</td><td>0.785</td><td>$0.0090</td><td><b>$90</b></td><td>$77</td><td>$115</td></tr>
+                <tr><td>¼ acre (10,890)</td><td>0.762</td><td>$0.0088</td><td><b>$95</b></td><td>$81</td><td>$125</td></tr>
+                <tr><td>½ acre (21,780)</td><td>0.598</td><td>$0.0069</td><td><b>$150</b></td><td>$127</td><td>$250</td></tr>
+                <tr><td>1 acre (43,560)</td><td>0.469</td><td>$0.0054</td><td><b>$235</b></td><td>$200</td><td>$501</td></tr>
+                <tr><td>2 acres (87,120)</td><td>0.368</td><td>$0.0042</td><td><b>$368</b></td><td>$313</td><td>$1,002</td></tr>
+                <tr><td>10 acres (435,600)</td><td>0.209</td><td>$0.0024</td><td><b>$1,049</b></td><td>$892</td><td>$5,009</td></tr>
+            </tbody>
+        </table></div>
+        <p class="src">All figures are US national index 1.00, flat terrain, normal grass, no obstacles, mowing only. Read the last column as "what a constant per-sq-ft rate would have charged" — it is the discrepancy this curve removes. The same table, from the pricing engine's point of view, is also in our <a href="/pages/for-lawn-pros">benchmarks for pros</a>.</p>
+    </div>
+
+    <div class="card">
+        <h2>3. Worked examples, start to finish</h2>
+        <p class="lead">Four fully expanded calculations. Each one also names the place on this site where the same number appears, so the FAQ, price tables and the calculator can be checked against each other.</p>
+        <div class="tbl-scroll"><table>
+            <thead><tr><th>Scenario</th><th>Arithmetic, in order</th><th>Result</th><th>Also appears as</th></tr></thead>
+            <tbody>
+                <tr>
+                    <td><b>5,000 sq ft, national, one-time</b></td>
+                    <td>sizeFactor = (5,000/5,000)<sup>−0.35</sup> = 1.000 → 5,000 × $0.0115 × 1.000 = $57.50 → above the $35 minimum → no other multipliers</td>
+                    <td><b>$58</b></td>
+                    <td>Homepage price table, "How much does it cost to mow a lawn?" FAQ, pros benchmark table</td>
+                </tr>
+                <tr>
+                    <td><b>1 acre, national, one-time</b><br><span class="src">the $501 puzzle</span></td>
+                    <td>sizeFactor = (43,560/5,000)<sup>−0.35</sup> = 0.4688 → 43,560 × $0.0115 = $500.94 → × 0.4688 = $234.83</td>
+                    <td><b>$235</b></td>
+                    <td>Homepage "1 Acre" row, "cost per acre" FAQ, pros benchmark table</td>
+                </tr>
+                <tr>
+                    <td><b>5,000 sq ft, Hawaii, weekly</b></td>
+                    <td>$57.50 × (1 − 0.15) = $48.88 → × regionIndex 1.86 = $90.91 → monthly = ×4 = $364 → season 12 mo = $4,368</td>
+                    <td><b>$91 / visit</b></td>
+                    <td>Cost-by-state table, Hawaii row (weekly 5,000 sq ft control lawn)</td>
+                </tr>
+                <tr>
+                    <td><b>1 acre, Texas, weekly</b></td>
+                    <td>$234.83 × (1 − 0.15) = $199.61 → × regionIndex 0.911 = $181.84</td>
+                    <td><b>$182 / visit</b></td>
+                    <td>DIY vs hire guide — labelled there as a low-cost-state, weekly-plan example</td>
+                </tr>
+                <tr>
+                    <td><b>2,000 sq ft, national, one-time</b></td>
+                    <td>sizeFactor = 1.378 → 2,000 × $0.0115 × 1.378 = $31.70 → <b>below</b> the $35 minimum, so the floor applies</td>
+                    <td><b>$35</b></td>
+                    <td>Homepage "Small" row ($30 weekly / $35 one-time), pros FAQ on job minimums</td>
+                </tr>
+            </tbody>
+        </table></div>
+        <p class="src">Rounding: the calculator rounds the final figure to whole dollars. Regional multipliers and season lengths are listed in section 6. Given a multiplier from that table, if you cannot reproduce any published price from these steps, that is a documentation bug — <a href="/contact">please tell us</a>. (This is arithmetic reproducibility from a stated input, not a claim that every input itself has a citable source; see section 5.)</p>
+    </div>
+
+    <div class="card">
+        <h2>4. Where every input comes from</h2>
+        <div class="tbl-scroll"><table>
             <thead><tr><th>Input</th><th>Source</th><th>How we used it</th><th>Authority</th></tr></thead>
             <tbody>
                 <tr>
                     <td><b>State / province cost index</b> (<code>mul</code>)</td>
-                    <td><span class="pill">US</span> MERIC / C2ER <i>Cost of Living Index</i>, Q2 2026 (US avg = 100).<br><span class="pill">CAN</span> Blended 2026 provincial cost-of-living index (≈ national avg = 100).</td>
-                    <td><code>mul = index ÷ 100</code>. Captures regional labour &amp; overhead differences that drive lawn-care pricing.</td>
-                    <td>✅ Published, quarterly, government-affiliated (MERIC is a Missouri state agency; C2ER is a nonprofit research council).</td>
+                    <td><span class="pill">US</span> MERIC / C2ER <i>Cost of Living Index</i>, Q3 2026 (US avg = 100); official table saved, all 51 values reproducible.<br><span class="pill">CAN</span> Statistics Canada <i>Purchasing power parities for consumption and household income across the Canadian provinces and territories</i> (11-633-X2025003), <b>2021</b> private-consumption PPP, official Ontario = 1.00, 13 regions.</td>
+                    <td><span class="pill">US</span> <code>mul = index ÷ 100</code>.<br><span class="pill">CAN</span> <code>mul = PPP ÷ 0.991746</code> rounded to 3 decimals — we divide by the <b>2021-population-weighted national mean</b> so the national average = 1.00. <b>The population weighting is our modelling choice, not a Statistics Canada method.</b> Used as a price-level proxy, not a measured lawn-care price — see section 5.</td>
+                    <td>⚠️ <b>US:</b> published, quarterly, government-affiliated; applying it to mowing is our modelling assumption. <b>Canada:</b> the PPP is official peer-reviewed statistics, but it measures <b>2021 household-consumption price levels, not 2026 lawn-service quotes</b>; territorial comparability is weak and Nunavut has no city price index. The re-basing (population weights, national mean = 1.00) and the decision to apply it to mowing are <b>our modelling choices</b>. Adapted from Statistics Canada, 11-633-X2025003, reference date 2021. This does not constitute an endorsement by Statistics Canada of this product.</td>
                 </tr>
                 <tr>
                     <td><b>Mowing-season length</b> (<code>season</code>, months)</td>
@@ -183,9 +263,9 @@
                 </tr>
                 <tr>
                     <td><b>Base mowing rate</b> (US / CAD)</td>
-                    <td><span class="pill">US</span> LawnStarter 2026: mowing $42–$68/visit (avg ≈ $57; $0.01–$0.06/sq ft).<br><span class="pill">CAN</span> Mow.ca / Dreame 2026: CA$30–$100/visit (typical suburban ≈ CA$55).</td>
-                    <td>US base set to ≈ $0.0115/sq ft (min $35); CAD base ≈ CA$0.011/sq ft (min CA$35).</td>
-                    <td>✅ Published marketplace ranges; we used the midpoints.</td>
+                    <td><span class="pill">US</span> LawnStarter 2026: mowing $42–$68/visit (avg ≈ $57); per-sq-ft band omitted pending source recheck.<br><span class="pill">CAN</span> Mow.ca / Dreame 2026: CA$30–$100/visit (typical suburban ≈ CA$55).</td>
+                    <td>Anchor rate $0.0115/sq ft (US) / CA$0.011 (CAD) <b>at 5,000 sq ft only</b>, then decayed by <code>sizeFactor(A)</code> before the $35 job minimum (CA$35 × 1.3 FX). <b>Not a flat per-sq-ft rate</b> — the effective rate falls with area (section 2).</td>
+                    <td>✅ Published marketplace ranges; we used the midpoints. The <em>shape</em> of the decay is our calibration, not a published figure.</td>
                 </tr>
                 <tr>
                     <td><b>Add-on service prices</b></td>
@@ -194,63 +274,112 @@
                     <td>✅ Published ranges; values placed at the midpoint.</td>
                 </tr>
                 <tr>
+                    <td><b>Size-efficiency exponent</b> (−0.35)</td>
+                    <td>Calibrated to the published 2026 size bands (≈$58 at 5,000 sq ft, ≈$235 at 1 acre) and to the fact that drive time and setup are fixed costs.</td>
+                    <td><code>sizeFactor(A) = (A/5000)<sup>−0.35</sup></code>; the full curve, table and worked examples are in sections 2–3.</td>
+                    <td>⚠️ <b>Model calibration with zero direct price samples.</b> Published here so it can be audited or replaced.</td>
+                </tr>
+                <tr>
+                    <td><b>Perimeter / edge adjustment</b></td>
+                    <td>Geometry — a square lot has perimeter ≈ 4√A — plus an assumption about the trimming time each extra foot of edge adds.</td>
+                    <td>Only when a user enters a measured perimeter: <code>clamp( (P/(4√A) − 1) × 0.5, 0, 0.45 )</code>, replacing the obstacle bucket.</td>
+                    <td>ℹ️ Operational assumption. Leaving the field blank keeps the default estimate unchanged.</td>
+                </tr>
+                <tr>
                     <td><b>Condition / terrain / obstacle / plan multipliers</b></td>
                     <td>Industry-standard surcharge bands (steep slopes and obstacles add labour time; recurring plans cost less per cut).</td>
                     <td>Fixed, transparent percentages shown in the UI.</td>
                     <td>ℹ️ Operational assumptions, clearly labelled — not from a single published table.</td>
                 </tr>
             </tbody>
-        </table>
+        </table></div>
     </div>
 
     <div class="card">
-        <h2>3. State &amp; province reference table</h2>
-        <p class="src">US <code>mul</code> = MERIC/C2ER Cost of Living Index Q2 2026 ÷ 100. <code>season</code> = USDA-zone / NOAA frost-free estimate. Canada <code>mul</code> = blended 2026 provincial index ÷ 100; <code>season</code> = climate estimate.</p>
-        <table>
+        <h2 id="data-confidence">5. Data provenance &amp; confidence</h2>
+        <p class="lead">Not every number on this site carries the same evidential weight. We label each one, so published market data can be told apart from a modelling assumption.</p>
+        <p class="src"><b>Data last reviewed: 26 November 2026.</b> The next review is due when the following quarterly MERIC/C2ER index is published. Every change to an input should be recorded here with its date and the pages it affects.</p>
+        <p class="src">Actual data, source and formula changes are tracked in our <a href="/data-update-log">data update log</a>. <b>It currently has no entries</b> — a row is added only when a real change is made, and nothing is written in after the fact.</p>
+        <div class="tbl-scroll"><table>
+            <thead><tr><th>Input</th><th>Type</th><th>Source</th><th>Direct lawn-care price samples</th><th>Confidence</th><th>Known limitation</th></tr></thead>
+            <tbody>
+                <tr><td>Mowing &amp; add-on price bands</td><td>Published market ranges</td><td>LawnStarter 2026 (US); Mow.ca / Dreame 2026 (Canada)</td><td>Indirect — national service ranges, not per-state quotes</td><td>Medium</td><td>National averages only; no city / suburb / rural split; the sources do not publish sample counts</td></tr>
+                <tr><td>State / province rate index<br>(50 US states + DC, 13 CAN)</td><td>Proxy</td><td>US: MERIC / C2ER Cost of Living Index Q3 2026 (official table, reproducible). Canada: Statistics Canada 2021 household-consumption PPP (11-633-X2025003, official Ontario = 1.00), re-based by our 2021-population-weighted national mean</td><td><b>0</b></td><td>Low–medium</td><td>Both indices measure household/price-level spending, not what a mowing crew charges. One value per region hides metro-to-rural spread. Canadian data is from 2021 (not 2026), territorial comparability is weak (Nunavut has no city price index), and the population-weighted re-basing is our modelling choice, not an official method.</td></tr>
+                <tr><td>Mowing-season length</td><td>Climate-derived estimate</td><td>USDA hardiness zones + NOAA 1991–2020 climate normals</td><td>0</td><td>Low–medium</td><td>A frost-free window, not a surveyed count of mowing months. Drought dormancy and summer heat shutdown are not modelled</td></tr>
+                <tr><td>Size-efficiency exponent (−0.35)</td><td>Model calibration</td><td>Fitted to published 2026 size bands (section 2)</td><td>0</td><td>Low</td><td>An assumption about how fixed costs spread over area; a different fleet or crew will have a different curve</td></tr>
+                <tr><td>Condition / terrain / obstacle / edge / plan multipliers</td><td>Operational assumptions</td><td>Industry surcharge practice, shown in the UI</td><td>0</td><td>Low</td><td>Not drawn from a single published table; a pro should replace these with their own numbers</td></tr>
+                <tr><td>Job minimum ($35)</td><td>Published floor + assumption</td><td>Low end of the LawnStarter 2026 mowing range ($42–$68/visit)</td><td>0</td><td>Medium</td><td>Real minimums move with route density and local competition</td></tr>
+            </tbody>
+        </table></div>
+        <div class="banner" style="margin:16px 0 0">
+            <span aria-hidden="true">⚠️</span>
+            <div><b>Plain statement:</b> we have <b>not</b> collected a single lawn-care invoice, provider quote or platform price for any individual state, city or province. The state/province table is a <b>modelled comparison, not a survey</b>. For the 51 US locations a published cost-of-living index is the public surrogate for local operating costs; for the 13 Canadian locations it is Statistics Canada's <b>2021 household-consumption PPP</b>. Neither is a lawn-care price index — the Canadian figures are 2021 spending-price levels, not 2026 lawn quotes — and we do not want readers mistaking one for the other.</div>
+        </div>
+        <h3>Why we still use the proxy</h3>
+        <ul>
+            <li>For the <b>51 US locations</b> it is <b>public, quarterly and independently reproducible</b>: anyone can rebuild those values from the cited MERIC/C2ER series. The <b>13 Canadian values are reproducible from the cited Statistics Canada 2021 PPP table</b> (official Ontario = 1.00) once our stated re-basing is applied — dividing by the 2021-population-weighted national mean (0.991746) and rounding to 3 decimals. The PPP itself is official; <b>the population weighting and the choice to use it for mowing are our modelling choices, not a Statistics Canada method</b>.</li>
+            <li>It lets every region be compared on <b>one identical control property</b>. Silently mixing a handful of real city quotes into modelled states would make the ranking unreadable — and, we think, less honest.</li>
+            <li>The common alternative — one national average price applied everywhere — is worse, because it erases the biggest driver of regional variation.</li>
+        </ul>
+        <h3 id="data-roadmap">What would make this better, in order</h3>
+        <ol>
+            <li><b>Record provenance for every data point.</b> A standing log with <code>location | service | source | quoted price | lawn size | date collected | sample count | URL</code>. No date and no sample count, no entry.</li>
+            <li><b>Collect local provider and platform price ranges</b> for a first batch of 10–20 high-demand cities, split into urban / suburban / rural. Publish the collection date and sample count next to every figure.</li>
+            <li><b>Keep those city pages separate from the national model</b> and label them as observed samples. Do not blend observed quotes into the proxy table: a half-surveyed table is harder to audit than an explicitly modelled one.</li>
+            <li><b>Back-check every page quoting a changed number</b> — state tables, FAQ, price tables and guides — and log the revision here with its date.</li>
+            <li><b>Only use sources we are permitted to cite.</b> Scraped marketplace data may breach a platform's terms; a sample we cannot attribute and date does not enter the model.</li>
+        </ol>
+        <p class="src">Until step 2 produces real samples, treat the state index as <b>directional</b>: good for ranking regions and building a budget range, not for predicting an individual contractor's bid. That is also why the calculator keeps size, condition, terrain, obstacles and frequency as separate inputs — they let your own situation enter the estimate instead of hiding inside a state average.</p>
+    </div>
+
+    <div class="card">
+        <h2>6. State &amp; province reference table</h2>
+        <p class="src">US <code>mul</code> = MERIC/C2ER Cost of Living Index Q3 2026 ÷ 100 (official table, all 51 reproducible). Canada <code>mul</code> = Statistics Canada <b>2021</b> household-consumption PPP ÷ 0.991746 (the 2021-population-weighted national mean; our modelling choice, not an official method), rounded to 3 decimals — a 2021 spending-price proxy, not a 2026 lawn-service price index. <code>season</code> = USDA-zone / NOAA climate estimate in both countries. <b>Adapted from Statistics Canada, 11-633-X2025003, reference date 2021. This does not constitute an endorsement by Statistics Canada of this product.</b></p>
+        <div class="tbl-scroll"><table>
             <thead><tr><th>State / Province</th><th>Index (mul)</th><th>Season (mo)</th><th>State / Province</th><th>Index (mul)</th><th>Season (mo)</th></tr></thead>
             <tbody>
-                <tr><td>Alabama</td><td>0.86</td><td>8</td><td>Montana</td><td>1.06</td><td>5</td></tr>
-                <tr><td>Alaska</td><td>1.25</td><td>4</td><td>Nebraska</td><td>0.90</td><td>6</td></tr>
-                <tr><td>Arizona</td><td>1.09</td><td>11</td><td>Nevada</td><td>1.05</td><td>10</td></tr>
-                <tr><td>Arkansas</td><td>0.89</td><td>7</td><td>New Hampshire</td><td>1.09</td><td>5</td></tr>
-                <tr><td>California</td><td>1.40</td><td>12</td><td>New Jersey</td><td>1.19</td><td>7</td></tr>
-                <tr><td>Colorado</td><td>1.03</td><td>6</td><td>New Mexico</td><td>0.90</td><td>8</td></tr>
-                <tr><td>Connecticut</td><td>1.04</td><td>7</td><td>New York</td><td>1.33</td><td>6</td></tr>
-                <tr><td>Delaware</td><td>1.01</td><td>8</td><td>North Carolina</td><td>0.97</td><td>8</td></tr>
-                <tr><td>Dist. of Columbia</td><td>1.34</td><td>8</td><td>North Dakota</td><td>0.91</td><td>5</td></tr>
-                <tr><td>Florida</td><td>1.01</td><td>12</td><td>Ohio</td><td>0.93</td><td>7</td></tr>
-                <tr><td>Georgia</td><td>0.90</td><td>9</td><td>Oklahoma</td><td>0.83</td><td>8</td></tr>
-                <tr><td>Hawaii</td><td>1.86</td><td>12</td><td>Oregon</td><td>1.10</td><td>9</td></tr>
-                <tr><td>Idaho</td><td>0.99</td><td>6</td><td>Pennsylvania</td><td>0.95</td><td>7</td></tr>
-                <tr><td>Illinois</td><td>0.95</td><td>7</td><td>Rhode Island</td><td>1.11</td><td>7</td></tr>
-                <tr><td>Indiana</td><td>0.90</td><td>7</td><td>South Carolina</td><td>0.93</td><td>9</td></tr>
-                <tr><td>Iowa</td><td>0.86</td><td>6</td><td>South Dakota</td><td>0.94</td><td>5</td></tr>
-                <tr><td>Kansas</td><td>0.87</td><td>7</td><td>Tennessee</td><td>0.90</td><td>8</td></tr>
-                <tr><td>Kentucky</td><td>0.94</td><td>7</td><td>Texas</td><td>0.91</td><td>10</td></tr>
-                <tr><td>Louisiana</td><td>0.91</td><td>10</td><td>Utah</td><td>0.98</td><td>8</td></tr>
-                <tr><td>Maine</td><td>1.13</td><td>5</td><td>Vermont</td><td>1.13</td><td>5</td></tr>
-                <tr><td>Maryland</td><td>1.19</td><td>8</td><td>Virginia</td><td>0.99</td><td>8</td></tr>
-                <tr><td>Massachusetts</td><td>1.48</td><td>7</td><td>Washington</td><td>1.15</td><td>9</td></tr>
-                <tr><td>Michigan</td><td>0.92</td><td>6</td><td>West Virginia</td><td>0.87</td><td>7</td></tr>
-                <tr><td>Minnesota</td><td>0.93</td><td>5</td><td>Wisconsin</td><td>0.96</td><td>6</td></tr>
-                <tr><td>Mississippi</td><td>0.87</td><td>9</td><td>Wyoming</td><td>0.94</td><td>5</td></tr>
-                <tr><td>Missouri</td><td>0.88</td><td>7</td><td>Ontario (CAN)</td><td>1.08</td><td>6</td></tr>
-                <tr><td>Nunavut (CAN)</td><td>1.25</td><td>3</td><td>Quebec (CAN)</td><td>0.96</td><td>6</td></tr>
-                <tr><td>Northwest Terr. (CAN)</td><td>1.20</td><td>4</td><td>Saskatchewan (CAN)</td><td>0.90</td><td>5</td></tr>
-                <tr><td>Nova Scotia (CAN)</td><td>1.00</td><td>5</td><td>Yukon (CAN)</td><td>1.15</td><td>4</td></tr>
-                <tr><td>New Brunswick (CAN)</td><td>0.94</td><td>5</td><td>BC (CAN)</td><td>1.12</td><td>9</td></tr>
-                <tr><td>Newfoundland (CAN)</td><td>0.93</td><td>5</td><td>Alberta (CAN)</td><td>0.98</td><td>5</td></tr>
-                <tr><td>PEI (CAN)</td><td>0.95</td><td>5</td><td>Manitoba (CAN)</td><td>0.92</td><td>5</td></tr>
+                <tr><td>Alabama</td><td>0.869</td><td>8</td><td>Montana</td><td>1.096</td><td>5</td></tr>
+                <tr><td>Alaska</td><td>1.271</td><td>4</td><td>Nebraska</td><td>0.909</td><td>6</td></tr>
+                <tr><td>Arizona</td><td>1.078</td><td>11</td><td>Nevada</td><td>1.023</td><td>10</td></tr>
+                <tr><td>Arkansas</td><td>0.891</td><td>7</td><td>New Hampshire</td><td>1.096</td><td>5</td></tr>
+                <tr><td>California</td><td>1.379</td><td>12</td><td>New Jersey</td><td>1.164</td><td>7</td></tr>
+                <tr><td>Colorado</td><td>1.026</td><td>6</td><td>New Mexico</td><td>0.911</td><td>8</td></tr>
+                <tr><td>Connecticut</td><td>1.141</td><td>7</td><td>New York</td><td>1.272</td><td>6</td></tr>
+                <tr><td>Delaware</td><td>1.016</td><td>8</td><td>North Carolina</td><td>0.966</td><td>8</td></tr>
+                <tr><td>Dist. of Columbia</td><td>1.353</td><td>8</td><td>North Dakota</td><td>0.910</td><td>5</td></tr>
+                <tr><td>Florida</td><td>1.016</td><td>12</td><td>Ohio</td><td>0.923</td><td>7</td></tr>
+                <tr><td>Georgia</td><td>0.910</td><td>9</td><td>Oklahoma</td><td>0.838</td><td>8</td></tr>
+                <tr><td>Hawaii</td><td>1.860</td><td>12</td><td>Oregon</td><td>1.108</td><td>9</td></tr>
+                <tr><td>Idaho</td><td>0.980</td><td>6</td><td>Pennsylvania</td><td>0.970</td><td>7</td></tr>
+                <tr><td>Illinois</td><td>0.952</td><td>7</td><td>Rhode Island</td><td>1.123</td><td>7</td></tr>
+                <tr><td>Indiana</td><td>0.906</td><td>7</td><td>South Carolina</td><td>0.926</td><td>9</td></tr>
+                <tr><td>Iowa</td><td>0.891</td><td>6</td><td>South Dakota</td><td>0.919</td><td>5</td></tr>
+                <tr><td>Kansas</td><td>0.888</td><td>7</td><td>Tennessee</td><td>0.900</td><td>8</td></tr>
+                <tr><td>Kentucky</td><td>0.930</td><td>7</td><td>Texas</td><td>0.911</td><td>10</td></tr>
+                <tr><td>Louisiana</td><td>0.918</td><td>10</td><td>Utah</td><td>1.002</td><td>8</td></tr>
+                <tr><td>Maine</td><td>1.140</td><td>5</td><td>Vermont</td><td>1.142</td><td>5</td></tr>
+                <tr><td>Maryland</td><td>1.199</td><td>8</td><td>Virginia</td><td>0.994</td><td>8</td></tr>
+                <tr><td>Massachusetts</td><td>1.486</td><td>7</td><td>Washington</td><td>1.133</td><td>9</td></tr>
+                <tr><td>Michigan</td><td>0.925</td><td>6</td><td>West Virginia</td><td>0.879</td><td>7</td></tr>
+                <tr><td>Minnesota</td><td>0.938</td><td>5</td><td>Wisconsin</td><td>0.978</td><td>6</td></tr>
+                <tr><td>Mississippi</td><td>0.866</td><td>9</td><td>Wyoming</td><td>0.933</td><td>5</td></tr>
+                <tr><td>Missouri</td><td>0.888</td><td>7</td><td>Ontario (CAN)</td><td>1.008</td><td>6</td></tr>
+                <tr><td>Nunavut (CAN)</td><td>1.079</td><td>3</td><td>Quebec (CAN)</td><td>0.958</td><td>6</td></tr>
+                <tr><td>Northwest Terr. (CAN)</td><td>0.978</td><td>4</td><td>Saskatchewan (CAN)</td><td>0.897</td><td>5</td></tr>
+                <tr><td>Nova Scotia (CAN)</td><td>0.938</td><td>5</td><td>Yukon (CAN)</td><td>0.958</td><td>4</td></tr>
+                <tr><td>New Brunswick (CAN)</td><td>0.877</td><td>5</td><td>BC (CAN)</td><td>1.139</td><td>9</td></tr>
+                <tr><td>Newfoundland (CAN)</td><td>0.877</td><td>5</td><td>Alberta (CAN)</td><td>0.998</td><td>5</td></tr>
+                <tr><td>PEI (CAN)</td><td>0.877</td><td>5</td><td>Manitoba (CAN)</td><td>0.928</td><td>5</td></tr>
             </tbody>
-        </table>
+        </table></div>
     </div>
 
     <div class="card">
-        <h2>4. Service price bands we calibrated to</h2>
-        <table>
+        <h2>7. Service price bands we calibrated to</h2>
+        <div class="tbl-scroll"><table>
             <thead><tr><th>Service</th><th>US range (LawnStarter 2026)</th><th>CAD range (Mow.ca / Dreame 2026)</th><th>Basis in calculator</th></tr></thead>
             <tbody>
-                <tr><td>Mowing</td><td>$42–$68 / visit</td><td>CA$30–$100 / visit</td><td>Per-sq-ft base rate</td></tr>
+                <tr><td>Mowing</td><td>$42–$68 / visit</td><td>CA$30–$100 / visit</td><td>Anchor rate at 5,000 sq ft, adjusted by size-efficiency curve</td></tr>
                 <tr><td>Weed control</td><td>$50–$210 / treatment</td><td>CA$60–$140 / treatment</td><td>Per-sq-ft × 4 treatments</td></tr>
                 <tr><td>Dethatching</td><td>$65–$165</td><td>CA$100–$250</td><td>Per-sq-ft × 1</td></tr>
                 <tr><td>Aeration</td><td>$107–$202</td><td>CA$80–$200</td><td>Per-sq-ft × 1</td></tr>
@@ -260,31 +389,37 @@
                 <tr><td>Leaf removal</td><td>$107–$435</td><td>varies</td><td>Per-sq-ft × 2 cleanups</td></tr>
                 <tr><td>Yard cleanup</td><td>$216–$462</td><td>CA$100–$300 / visit</td><td>Flat × 2 (spring + fall)</td></tr>
             </tbody>
-        </table>
+        </table></div>
+        <p class="src">Mulch refresh is quoted flat here; to size a mulch order from your own bed area and depth, the <a href="/tools/mulch-calculator">mulch calculator</a> converts to cubic yards and bag counts.</p>
     </div>
 
     <div class="card">
-        <h2 id="limitations">5. Limitations &amp; how to verify</h2>
+        <h2 id="limitations">8. Limitations &amp; how to verify</h2>
         <ul>
-            <li><b>No official "lawn mowing price" exists.</b> No government publishes a per-state mowing rate. We proxy regional cost with the Cost of Living Index, which is the most defensible public surrogate for local labour/overhead.</li>
+            <li><b>No surveyed lawn-care price data exists in this model.</b> No government publishes a per-state mowing rate, and we have not collected local invoices either. Regional cost is proxied with the Cost of Living Index. Section 5 states this field by field, including the zero sample counts.</li>
+            <li><b>Cost of living is not a mowing price.</b> It tracks household expenses such as housing, groceries and transport. Within a state, urban cores and resort areas typically run above the index and rural areas below, so one state value cannot describe a zip code.</li>
+            <li><b>The size curve is a calibration, not a measurement.</b> The −0.35 exponent reproduces the published 2026 size bands; it is published in section 2 so it can be audited, challenged or replaced.</li>
             <li><b>Season length is an estimate.</b> It reflects the frost-free growing window, not a surveyed "months people mow." Northern states are conservative.</li>
-            <li><b>Prices are 2026 snapshots.</b> Marketplace ranges shift with fuel, labour, and demand. Re-check the sources each season.</li>
-            <li><b>Local variation is real.</b> Within a state, urban cores and resort areas run above the index; rural areas below.</li>
-            <li><b>Best practice:</b> treat the output as a budgeting range, then get 2–3 local quotes. If you operate a lawn business, replace the <code>BASE</code>, <code>REGIONS</code>, and <code>SERVICES</code> values in <code>index.html</code> with your own actual pricing — the formula stays valid.</li>
+            <li><b>Prices are 2026 snapshots.</b> Marketplace ranges shift with fuel, labour and demand. The last-reviewed date is recorded in section 5.</li>
+            <li><b>Verify it yourself.</b> Sections 1–3 give a complete arithmetic path from a stated regional input to a price. If a published price cannot be reproduced from those steps, that is a documentation bug — <a href="/contact">tell us</a>. Reproducing a price from a given multiplier is different from verifying the multiplier's source; see section 5.</li>
+            <li><b>Best practice:</b> treat the output as a budgeting range, then get 2–3 local quotes. If you operate a lawn business, replace the <code>BASE</code>, <code>REGIONS</code> and <code>SERVICES</code> values in <code>index.html</code> with your own actual pricing — the formula stays valid, and the <code>sizeFactor</code> exponent can be tuned to your own job records.</li>
         </ul>
         <p class="src"><b>Primary sources:</b><br>
-            • MERIC / C2ER Cost of Living Index (Q2 2026) — <a href="https://meric.mo.gov/data/cost-living-data-series" target="_blank" rel="noopener">meric.mo.gov/data/cost-living-data-series</a><br>
+            • MERIC / C2ER Cost of Living Index (Q3 2026) — <a href="https://meric.mo.gov/data/cost-living-data-series" target="_blank" rel="noopener">meric.mo.gov/data/cost-living-data-series</a> — US states + DC only; <b>contains no Canadian data</b><br>
+            • Statistics Canada — <i>Purchasing power parities for consumption and household income across the Canadian provinces and territories</i> (11-633-X2025003) — <a href="https://www150.statcan.gc.ca/n1/pub/11-633-x/11-633-x2025003-eng.htm" target="_blank" rel="noopener">statcan.gc.ca/11-633-x2025003</a> — <b>2021</b> household-consumption PPP, 13 provinces/territories, Ontario = 1.00. <b>Adapted from Statistics Canada, 11-633-X2025003, reference date 2021. This does not constitute an endorsement by Statistics Canada of this product.</b><br>
             • LawnStarter — Lawn Care Cost 2026 — <a href="https://lawnstarter.com/blog/cost/lawn-care-price" target="_blank" rel="noopener">lawnstarter.com/blog/cost/lawn-care-price</a><br>
             • Mow.ca — Lawn Mowing Prices in Canada 2026 — <a href="https://mow.ca/lawn-mowing-prices" target="_blank" rel="noopener">mow.ca/lawn-mowing-prices</a><br>
             • Dreame Canada — Lawn Care Pricing Chart 2026 — <a href="https://ca.dreametech.com/blogs/lawn-garden/lawn-care-pricing-chart" target="_blank" rel="noopener">ca.dreametech.com/blogs/lawn-garden/lawn-care-pricing-chart</a><br>
             • USDA Plant Hardiness Zone Map — <a href="https://planthardiness.ars.usda.gov/" target="_blank" rel="noopener">planthardiness.ars.usda.gov</a><br>
-            • NOAA Climate Normals (1991–2020) — <a href="https://www.ncei.noaa.gov/access/us-climate-normals/" target="_blank" rel="noopener">ncei.noaa.gov/access/us-climate-normals</a>
+            • NOAA Climate Normals (1991–2020) — <a href="https://www.ncei.noaa.gov/access/us-climate-normals/" target="_blank" rel="noopener">ncei.noaa.gov/access/us-climate-normals</a><br>
+            • <b>Canadian provincial/territorial indices:</b> the underlying values are the Statistics Canada 2021 private-consumption PPP above (official Ontario = 1.00). We re-base them by dividing by the <b>2021-population-weighted national mean (0.991746)</b> and rounding to 3 decimals; the population weights and the choice to use a PPP for mowing are <b>our modelling choices, not a Statistics Canada method</b>. This is a <b>2021 household-spending price proxy, not a 2026 lawn-service price index</b>. Reproducible from the cited table plus the stated re-basing; see section 6 and <code>b_evidence/statcan_ppp_2021/</code>.
         </p>
     </div>
 
     <div class="card">
-        <h2>6. Affiliate &amp; editorial disclosure</h2>
+        <h2>9. Affiliate &amp; editorial disclosure</h2>
         <p>Some equipment and service links on this site are affiliate links. If you click one and later hire a provider or buy a product, we may earn a commission at <b>no extra cost to you</b>. This does not affect the calculator's numbers — the pricing engine is independent of any affiliate relationship, and we do not rank or recommend providers based on commissions.</p>
+        <p>For how we source, verify and correct the figures on this site, see the <a href="/editorial-policy">editorial policy</a>.</p>
     </div>
 
 </main>
@@ -298,7 +433,7 @@
             <div><h4>Company</h4><a href="/about">About</a><br><a href="/contact">Contact</a><br><a href="/privacy">Privacy</a></div>
         </div>
         <p style="margin:0 0 12px;color:#cfe9d8">JrMowQuote — Free Lawn Mowing Cost Calculator · Operated by Jarenson (觉然轩)</p>
-        <div class="disclaim">Estimates only — not a binding quote. State/province indices: MERIC/C2ER Cost of Living Index 2026. Season lengths: USDA / NOAA climate estimates. Prices: LawnStarter (US) and Mow.ca / Dreame (Canada) 2026 ranges.</div>
+        <div class="disclaim">Estimates only — not a binding quote. US state indices are published cost-of-living proxies; Canadian provincial/territorial indices use Statistics Canada 2021 household-consumption PPP re-based to a 2021-population-weighted national average of 1.00 (our modelling choice, not an official method) — a 2021 spending-price proxy, not a 2026 lawn-service price index. Neither is a surveyed lawn-care price. Adapted from Statistics Canada, 11-633-X2025003, reference date 2021. This does not constitute an endorsement by Statistics Canada of this product. Season lengths: USDA / NOAA climate estimates. Prices: LawnStarter (US) and Mow.ca / Dreame (Canada) 2026 ranges. Size-efficiency curve and data confidence levels are published above. Data last reviewed 26 November 2026.</div>
     </div>
 </footer>
 

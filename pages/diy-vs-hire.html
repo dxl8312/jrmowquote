@@ -17,8 +17,7 @@
     <meta property="og:image:height" content="675" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <!-- ===== Google AdSense (loader, once per page; replace placeholder ID after approval) ===== -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-0000000000000000" crossorigin="anonymous"></script>
+    <!-- No advertising scripts: AdSense not registered or enabled. -->
 
     <script type="application/ld+json">
     {
@@ -26,7 +25,7 @@
       "@type": "FAQPage",
       "mainEntity": [
         { "@type": "Question", "name": "Is it worth hiring someone to mow my lawn?",
-          "acceptedAnswer": { "@type": "Answer", "text": "For a typical 5,000 sq ft lawn, DIY costs about $53/season in fuel and upkeep plus your own time, while hiring runs ~$49/mow (~$2,364/season on a weekly plan in a warm state). DIY wins on cash for most homeowners until your time is worth more than about $80/hr. Hiring makes sense if you value your Saturday above that, have a large or difficult lawn, or simply do not want the work." } },
+          "acceptedAnswer": { "@type": "Answer", "text": "For a typical 5,000 sq ft lawn, DIY costs about $53/season in fuel and upkeep plus your own time, while hiring runs ~$49/mow (~$2,384/season on a weekly plan in a warm state). DIY wins on cash for most homeowners until your time is worth more than about $80/hr. Hiring makes sense if you value your Saturday above that, have a large or difficult lawn, or simply do not want the work." } },
         { "@type": "Question", "name": "How much does equipment cost if I mow myself?",
           "acceptedAnswer": { "@type": "Answer", "text": "A reel or manual mower is $120–$280, an electric or gas push mower $250–$550, a self-propelled $380–$700, an entry riding mower $1,900–$3,200, and a zero-turn $3,200–$6,500. Add roughly $50–$80/year in fuel and upkeep, more for riding mowers." } },
         { "@type": "Question", "name": "When does hiring a lawn service become cheaper than DIY?",
@@ -103,7 +102,13 @@
         header.nav a.btn:hover{background:#c9f26a;color:var(--green-900);text-decoration:none}
         @media(max-width:1140px){header.nav .wrap{gap:14px}header.nav nav{gap:12px;font-size:12.5px}}
         @media(max-width:980px){header.nav nav{display:none}}
-</style>
+
+        /* P8-1B: wide tables scroll locally on small screens instead of overflowing the page */
+        @media (max-width:767px){
+            .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:12px 0;border-radius:12px}
+            .tbl-scroll table.tbl{min-width:520px;margin:0}
+        }
+        </style>
 </head>
 <body>
 
@@ -158,7 +163,7 @@
     <div class="grid2">
         <div class="callout" style="margin:0">
             <h3 style="margin-top:0">Hiring = predictable cash</h3>
-            <p>A pro averages about <strong>$49 per visit</strong> for a typical 5,000 sq ft lawn in a low-cost state — squarely inside the published 2026 national range of <strong>$42–$68/visit</strong>. On a weekly plan that's ~$197/month and ~$2,364 for a 12-month (warm-climate) season. Bigger or harder lawns climb fast: a 1-acre lot runs ~$182/visit, a steep, overgrown 10,000 sq ft yard ~$260/visit. Edging, blowing and disposal are baked in.</p>
+            <p>A 5,000 sq ft lawn on a <strong>weekly plan at the US national index (1.00)</strong> runs about <strong>$49 per visit</strong> — the $58 one-time price less the 15% recurring discount, squarely inside the published 2026 national range of <strong>$42–$68/visit</strong>. That is <strong>~$196/month</strong> at the national index; in a year-round state such as Florida (1.016 index, 12-month season) it reaches <strong>~$2,384/season</strong>. Bigger or harder lawns climb fast: a 1-acre lot in Texas (0.911) on the same weekly plan runs <strong>~$182/visit</strong>, and a steep, overgrown 10,000 sq ft yard about <strong>$231</strong> for a one-time cut. Edging, blowing and disposal are baked in.</p>
         </div>
         <div class="callout" style="margin:0">
             <h3 style="margin-top:0">DIY = low cash, your time</h3>
@@ -167,7 +172,7 @@
     </div>
 
     <h3>What the equipment actually costs</h3>
-    <table class="tbl">
+    <div class="tbl-scroll"><table class="tbl">
         <thead><tr><th>Lawn size</th><th>Best-fit mower</th><th>Equipment (one-time)</th><th class="num">Running cost/yr</th></tr></thead>
         <tbody>
             <tr><td>&lt; 2,000 sq ft</td><td>Reel / electric push</td><td>$120–$450</td><td class="num">~$30</td></tr>
@@ -176,7 +181,7 @@
             <tr><td>0.3–0.7 acre</td><td>Gas or electric riding 42"</td><td>$1,900–$4,500</td><td class="num">~$80–$150</td></tr>
             <tr><td>0.7+ acre</td><td>Zero-turn 54"</td><td>$3,200–$6,500</td><td class="num">~$150+</td></tr>
         </tbody>
-    </table>
+    </table></div>
     <figure class="fig">
         <img src="../images/lawn-equipment-cost.webp" alt="Walk-behind mower, string trimmer and leaf blower stored neatly in a home garage" width="1000" height="562" loading="lazy" decoding="async" />
         <figcaption><b>The equipment you are really buying.</b> The mower is the visible cost; the trimmer, blower, fuel, oil and blade sharpening are the ones people forget. They are all counted in the running-cost table above.</figcaption>
@@ -184,24 +189,24 @@
 
     <h2>Medium lawn, side-by-side across every horizon</h2>
     <p>This is the headline example: a <strong>5,000 sq ft lawn, mowed weekly, in Florida</strong> (12-month season, 48 mows). DIY uses a self-propelled mower; your time is valued at <strong>$20/hr</strong>. The "all-in" column adds your labour at that rate. Read it top to bottom — the winner flips only at the longest horizons for high earners, never on a single mow.</p>
-    <table class="tbl">
+    <div class="tbl-scroll"><table class="tbl">
         <thead><tr><th>Horizon</th><th class="num">Mows</th><th class="num">DIY out-of-pocket</th><th class="num">DIY all-in (@$20/hr)</th><th class="num">Hire a pro</th><th>Verdict</th></tr></thead>
         <tbody>
             <tr class="diytag"><td>1 mow</td><td class="num">1</td><td class="num">$1</td><td class="num">$13</td><td class="num">$49</td><td><span class="win-diy">DIY by $36</span></td></tr>
             <tr class="diytag"><td>1 month</td><td class="num">4</td><td class="num">$4</td><td class="num">$52</td><td class="num">$197</td><td><span class="win-diy">DIY by $145</span></td></tr>
             <tr class="diytag"><td>1 quarter</td><td class="num">12</td><td class="num">$13</td><td class="num">$156</td><td class="num">$591</td><td><span class="win-diy">DIY by $435</span></td></tr>
             <tr class="diytag"><td>Half season</td><td class="num">24</td><td class="num">$26</td><td class="num">$312</td><td class="num">$1,182</td><td><span class="win-diy">DIY by $870</span></td></tr>
-            <tr class="diytag"><td>Full season</td><td class="num">48</td><td class="num">$53</td><td class="num">$623</td><td class="num">$2,364</td><td><span class="win-diy">DIY by $1,741</span></td></tr>
-            <tr class="diytag"><td>Year 1 (mower bought)</td><td class="num">48</td><td class="num">$593</td><td class="num">$1,163</td><td class="num">$2,364</td><td><span class="win-diy">DIY by $1,201</span></td></tr>
-            <tr class="diytag"><td>Year 2 (mower owned)</td><td class="num">48</td><td class="num">$53</td><td class="num">$623</td><td class="num">$2,364</td><td><span class="win-diy">DIY by $1,741</span></td></tr>
+            <tr class="diytag"><td>Full season</td><td class="num">48</td><td class="num">$53</td><td class="num">$623</td><td class="num">$2,384</td><td><span class="win-diy">DIY by $1,761</span></td></tr>
+            <tr class="diytag"><td>Year 1 (mower bought)</td><td class="num">48</td><td class="num">$593</td><td class="num">$1,163</td><td class="num">$2,384</td><td><span class="win-diy">DIY by $1,221</span></td></tr>
+            <tr class="diytag"><td>Year 2 (mower owned)</td><td class="num">48</td><td class="num">$53</td><td class="num">$623</td><td class="num">$2,384</td><td><span class="win-diy">DIY by $1,761</span></td></tr>
             <tr class="diytag"><td>5 years</td><td class="num">240</td><td class="num">$803</td><td class="num">$3,657</td><td class="num">$11,820</td><td><span class="win-diy">DIY by $8,163</span></td></tr>
         </tbody>
-    </table>
+    </table></div>
     <div class="callout"><strong>The breakeven is higher than you think.</strong> At $20/hr, DIY wins this lawn by <strong>$1,741/season</strong> — and even buying the mower in year one still leaves you $1,201 ahead. Hiring only becomes the cheaper choice once your time is worth more than about <strong>$81/hr</strong> (or ~$77/hr once you count ~$108/yr of mower wear). Most homeowners are far below that line, which is why DIY wins on pure cash for so many people.</div>
 
     <h2>Large lawn: the gap widens</h2>
     <p>A <strong>1-acre lot in Texas</strong> (10-month season, 40 mows) on a gas riding mower. Here DIY's fixed handling time is a smaller share of the job, so the mower earns its keep even harder. At $20/hr:</p>
-    <table class="tbl">
+    <div class="tbl-scroll"><table class="tbl">
         <thead><tr><th>Horizon</th><th class="num">Mows</th><th class="num">DIY out-of-pocket</th><th class="num">DIY all-in (@$20/hr)</th><th class="num">Hire a pro</th><th>Verdict</th></tr></thead>
         <tbody>
             <tr class="diytag"><td>1 mow</td><td class="num">1</td><td class="num">$2</td><td class="num">$23</td><td class="num">$182</td><td><span class="win-diy">DIY by $159</span></td></tr>
@@ -210,12 +215,12 @@
             <tr class="diytag"><td>Year 1</td><td class="num">48</td><td class="num">$618</td><td class="num">$1,637</td><td class="num">$8,724</td><td><span class="win-diy">DIY by $7,087</span></td></tr>
             <tr class="diytag"><td>5 years</td><td class="num">240</td><td class="num">$931</td><td class="num">$6,023</td><td class="num">$43,620</td><td><span class="win-diy">DIY by $37,597</span></td></tr>
         </tbody>
-    </table>
+    </table></div>
     <p>A big lawn is exactly where the "just hire it" instinct is most expensive: the pro's per-visit price scales with area, while your riding mower is a sunk cost. DIY wins by <strong>$6,356 in a full season</strong> — and $7,087 in year one even after buying the mower.</p>
 
     <h2>When DIY stops winning: the high earner</h2>
     <p>Same 10,000 sq ft lawn in New York, but now your time is worth <strong>$120/hr</strong>. The mowing still takes ~51 min and 20.5 hours a season, but that time is now worth <strong>$2,460</strong> — more than the pro's whole invoice. The table flips:</p>
-    <table class="tbl">
+    <div class="tbl-scroll"><table class="tbl">
         <thead><tr><th>Horizon</th><th class="num">Mows</th><th class="num">DIY out-of-pocket</th><th class="num">DIY all-in (@$120/hr)</th><th class="num">Hire a pro</th><th>Verdict</th></tr></thead>
         <tbody>
             <tr class="hiretag"><td>1 mow</td><td class="num">1</td><td class="num">$2</td><td class="num">$105</td><td class="num">$102</td><td><span class="win-hire">Hire by $3</span></td></tr>
@@ -223,12 +228,12 @@
             <tr class="hiretag"><td>Year 1</td><td class="num">48</td><td class="num">$631</td><td class="num">$5,560</td><td class="num">$4,896</td><td><span class="win-hire">Hire by $664</span></td></tr>
             <tr class="hiretag"><td>5 years</td><td class="num">240</td><td class="num">$995</td><td class="num">$25,638</td><td class="num">$24,480</td><td><span class="win-hire">Hire by $1,158</span></td></tr>
         </tbody>
-    </table>
+    </table></div>
     <div class="callout warn"><strong>The breakeven for this lawn is ~$117/hr</strong> (about $112/hr once you count the mower's wear). Below it, DIY; above it, hire. Notice that even at $120/hr the gap is slim on a single mow — hiring only pulls clearly ahead once you stack a full season (and the mower's wear) on top of your billable hours. That's the real "when to hire" line: not a fixed dollar figure, but <em>your</em> hourly rate versus the area-adjusted breakeven.</div>
 
     <h2>Canada: shorter season, same logic</h2>
     <p>In <strong>Ontario</strong> a 5,000 sq ft lawn gets only a 6-month season (24 mows), priced in <strong>CA$</strong>. The pattern is identical — DIY wins on cash until your time is worth more than about <strong>CA$81/hr</strong>:</p>
-    <table class="tbl">
+    <div class="tbl-scroll"><table class="tbl">
         <thead><tr><th>Horizon</th><th class="num">Mows</th><th class="num">DIY out-of-pocket</th><th class="num">DIY all-in (@CA$20/hr)</th><th class="num">Hire a pro</th><th>Verdict</th></tr></thead>
         <tbody>
             <tr class="diytag"><td>1 mow</td><td class="num">1</td><td class="num">CA$2</td><td class="num">CA$14</td><td class="num">CA$50</td><td><span class="win-diy">DIY by CA$37</span></td></tr>
@@ -236,7 +241,7 @@
             <tr class="diytag"><td>Year 1</td><td class="num">48</td><td class="num">CA$798</td><td class="num">CA$1,369</td><td class="num">CA$2,424</td><td><span class="win-diy">DIY by CA$1,055</span></td></tr>
             <tr class="diytag"><td>5 years</td><td class="num">240</td><td class="num">CA$1,181</td><td class="num">CA$4,035</td><td class="num">CA$12,120</td><td><span class="win-diy">DIY by CA$8,085</span></td></tr>
         </tbody>
-    </table>
+    </table></div>
 
     <h2>When to DIY</h2>
     <ul>
@@ -260,7 +265,7 @@
     </div>
 
     <section class="faq">
-        <details open><summary>Is it worth hiring someone to mow my lawn?</summary><p>For a typical 5,000 sq ft lawn, DIY costs about $53/season in fuel and upkeep plus your own time, while hiring runs ~$49/mow (~$2,364/season on a weekly plan in a warm state). DIY wins on cash for most homeowners until your time is worth more than about $80/hr. Hiring makes sense if you value your Saturday above that, have a large or difficult lawn, or simply do not want the work.</p></details>
+        <details open><summary>Is it worth hiring someone to mow my lawn?</summary><p>For a typical 5,000 sq ft lawn, DIY costs about $53/season in fuel and upkeep plus your own time, while hiring runs ~$49/mow (~$2,384/season on a weekly plan in a warm state). DIY wins on cash for most homeowners until your time is worth more than about $80/hr. Hiring makes sense if you value your Saturday above that, have a large or difficult lawn, or simply do not want the work.</p></details>
         <details><summary>How much does equipment cost if I mow myself?</summary><p>A reel or manual mower is $120–$280, an electric or gas push mower $250–$550, a self-propelled $380–$700, an entry riding mower $1,900–$3,200, and a zero-turn $3,200–$6,500. Add roughly $50–$80/year in fuel and upkeep, more for riding mowers.</p></details>
         <details><summary>When does hiring a lawn service become cheaper than DIY?</summary><p>Only once your hourly time value clears the breakeven. For a medium 5,000 sq ft lawn that point is about $80–$81/hr (or ~$77/hr once you count mower wear). Below that, DIY is cheaper; above it, hiring pays for itself in the time you get back. A single mow or a single month is almost always cheaper to DIY because you have not yet paid for a full season of service.</p></details>
     </section>
